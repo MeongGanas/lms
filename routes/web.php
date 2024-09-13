@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('User/Index');
-});
+})->name("home");
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/mycourses', function () {
+    return Inertia::render('User/Courses');
+});
 
 require __DIR__ . '/auth.php';

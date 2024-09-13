@@ -1,14 +1,17 @@
-import { Button } from "@/Components/ui/button";
+import {
+    ContinueLearn,
+    JoinOrCreateCourse,
+} from "@/Components/MyComponent/User/IndexComponent";
+import UserLayout from "@/Layouts/UserLayout";
 import { PageProps } from "@/types";
-import { Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 
 export default function Index({ auth }: PageProps) {
-    console.log(auth);
     return (
-        <div>
-            <Link href={route("logout")} method="post">
-                Logout
-            </Link>
-        </div>
+        <UserLayout user={auth.user}>
+            <Head title="Home" />
+            <JoinOrCreateCourse user={auth.user} />
+            <ContinueLearn />
+        </UserLayout>
     );
 }

@@ -60,15 +60,6 @@ export default function Login() {
     return (
         <div className="w-full h-screen lg:grid lg:grid-cols-2">
             <Head title="Login" />
-            <div className="hidden lg:block">
-                <div className="sticky top-0">
-                    <img
-                        src="/asset/login.jpg"
-                        alt="Login image"
-                        className="max-w-full max-h-screen mx-auto"
-                    />
-                </div>
-            </div>
             <div className="flex items-center justify-center py-12">
                 <Form {...form}>
                     <form
@@ -146,6 +137,15 @@ export default function Login() {
                         </div>
                     </form>
                 </Form>
+            </div>
+            <div className="hidden lg:block">
+                <div className="sticky top-0 py-12">
+                    <img
+                        src="/asset/login.svg"
+                        alt="Login image"
+                        className="rounded-md h-[80vh] mx-auto"
+                    />
+                </div>
             </div>
         </div>
     );

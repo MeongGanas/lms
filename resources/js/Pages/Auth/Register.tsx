@@ -20,9 +20,9 @@ import { Label } from "@/components/ui/label";
 const loginSchema = z
     .object({
         firstname: z.string(),
-        lastname: z.string(),
-        username: z.string(),
+        lastname: z.string().optional(),
         email: z.string().email("Email must be a valid email."),
+        phone_number: z.string(),
         password: z.string(),
         password_confirmation: z.string(),
     })
@@ -41,7 +41,7 @@ export default function Login() {
         defaultValues: {
             firstname: "",
             lastname: "",
-            username: "",
+            phone_number: "",
             email: "",
             password: "",
             password_confirmation: "",
@@ -73,16 +73,23 @@ export default function Login() {
     return (
         <div className="w-full h-screen lg:grid lg:grid-cols-2">
             <Head title="Login" />
-            <div className="flex items-center justify-center py-12">
+            <div className="hidden lg:block">
+                <div className="sticky top-0 py-12">
+                    <img
+                        src="/asset/register.svg"
+                        className="h-[80vh] rounded-md mx-auto"
+                        alt="register image"
+                    />
+                </div>
+            </div>
+            <div className="flex items-center justify-center px-5 py-12">
                 <Form {...form}>
-                    <form
-                        onSubmit={submit}
-                        className="mx-auto grid w-[350px] gap-6"
-                    >
-                        <div className="grid gap-2 text-center">
-                            <h1 className="text-3xl font-bold">Register</h1>
+                    <form onSubmit={submit} className="grid gap-6 mx-auto">
+                        <div className="grid gap-2">
+                            <h1 className="text-4xl font-bold">Sign up</h1>
                             <p className="text-muted-foreground">
-                                Enter your personal data to continue register
+                                Let&apos;s get you all st up so you can access
+                                your personal account.
                             </p>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -114,6 +121,44 @@ export default function Login() {
                                             <Input
                                                 id="lastname"
                                                 placeholder="Your Last Name"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-2">
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="email"
+                                                type="email"
+                                                placeholder="your@email.com"
+                                                required
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={control}
+                                name="phone_number"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-2">
+                                        <FormLabel>Phone Number</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="phone_number"
+                                                placeholder="Your Phone Number"
                                                 required
                                                 {...field}
                                             />
@@ -123,43 +168,6 @@ export default function Login() {
                                 )}
                             />
                         </div>
-                        <FormField
-                            control={control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem className="grid gap-2">
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="username"
-                                            placeholder="Your Username"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem className="grid gap-2">
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            placeholder="your@email.com"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         <FormField
                             control={control}
                             name="password"
@@ -217,15 +225,6 @@ export default function Login() {
                         </div>
                     </form>
                 </Form>
-            </div>
-            <div className="hidden lg:block">
-                <div className="sticky top-0">
-                    <img
-                        src="/asset/register.jpg"
-                        className="h-screen max-w-full"
-                        alt="register image"
-                    />
-                </div>
             </div>
         </div>
     );
