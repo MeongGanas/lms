@@ -23,7 +23,7 @@ export default function UserLayout({
     user,
     children,
 }: {
-    user: User;
+    user: User | null;
     children: ReactNode;
 }) {
     const current_route = window.location.href;
@@ -54,14 +54,14 @@ export default function UserLayout({
                             <NavLink
                                 name="Courses"
                                 Icon={GraduationCap}
-                                isActive={current_route.includes("/mycourses")}
-                                href="/mycourses"
+                                isActive={current_route.includes("/courses")}
+                                href="/courses"
                             />
                             <NavLink
                                 name="Tasks"
                                 Icon={File}
                                 isActive={current_route.includes("/tasks")}
-                                href="/mytasks"
+                                href="/tasks"
                             >
                                 <Badge className="flex items-center justify-center w-6 h-6 ml-auto rounded-full shrink-0">
                                     6
@@ -120,15 +120,15 @@ export default function UserLayout({
                                     name="Courses"
                                     Icon={GraduationCap}
                                     isActive={current_route.includes(
-                                        "/mycourses"
+                                        "/courses"
                                     )}
-                                    href="/mycourses"
+                                    href="/courses"
                                 />
                                 <NavLink
                                     name="Tasks"
                                     Icon={File}
                                     isActive={current_route.includes("/tasks")}
-                                    href="/mytasks"
+                                    href="/tasks"
                                 >
                                     <Badge className="flex items-center justify-center w-6 h-6 ml-auto rounded-full shrink-0">
                                         6

@@ -10,18 +10,29 @@ import {
 } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { User } from "@/types";
-import CourseCard from "./CourseCard";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/Components/ui/card";
+import { Progress } from "@/Components/ui/progress";
+import { Course } from "@/types";
+import { Link } from "@inertiajs/react";
 
-export function JoinOrCreateCourse({ user }: { user: User }) {
+export function JoinOrCreateCourseDialog({ user }: { user: User | null }) {
     return (
-        <div className="flex items-center justify-center w-full py-20 rounded-xl bg-muted">
-            {(user && user.role === "student") || (!user && <JoinDialog />)}
-            {user && user.role === "teacher" && <CreateDialog />}
-        </div>
+        <>
+            {((user && user.role === "student") || !user) && (
+                <JoinCourseDialog />
+            )}
+            {user && user.role === "teacher" && <CreateCourseDialog />}
+        </>
     );
 }
 
-function JoinDialog() {
+function JoinCourseDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -49,7 +60,7 @@ function JoinDialog() {
     );
 }
 
-function CreateDialog() {
+function CreateCourseDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -87,5 +98,44 @@ export function ContinueLearn() {
                 <CourseCard />
             </div>
         </div>
+    );
+}
+
+export function RecentCourse() {
+    return (
+        <div className="pb-10 space-y-4">
+            <h1 className="text-2xl font-bold">Recent Course</h1>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                <CourseCard />
+                <CourseCard />
+                <CourseCard />
+            </div>
+        </div>
+    );
+}
+
+export function CourseCard({ course }: { course?: Course }) {
+    return (
+        <Link href="">
+            <Card className="shadow-sm border-neutral-50 rounded-xl">
+                <CardHeader className="p-3">
+                    <img
+                        src="/asset/course_placeholder.png"
+                        className="rounded-xl"
+                        alt="placeholder"
+                    />
+                </CardHeader>
+                <CardContent className="px-3 py-1">
+                    <CardTitle className="mb-3 text-lg">
+                        Beginner&apos;s Guide to becoming a professional
+                        frontend developer
+                    </CardTitle>
+                    <Progress value={80} />
+                </CardContent>
+                <CardFooter className="p-3">
+                    <h4 className="text-sm">Prashant Kumar singh</h4>
+                </CardFooter>
+            </Card>
+        </Link>
     );
 }

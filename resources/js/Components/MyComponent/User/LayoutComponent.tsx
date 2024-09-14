@@ -53,7 +53,7 @@ export function NavLink({
     );
 }
 
-export function UserDropdown({ user }: { user: User }) {
+export function UserDropdown({ user }: { user: User | null }) {
     const fullname = user
         ? `${user.firstname} ${user.lastname !== null ? user.lastname : ""}`
         : "";
