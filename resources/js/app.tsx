@@ -5,8 +5,10 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+const queryClient = new QueryClient();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -19,10 +21,10 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <>
+            <QueryClientProvider client={queryClient}>
                 <Toaster />
                 <App {...props} />
-            </>
+            </QueryClientProvider>
         );
     },
     progress: {

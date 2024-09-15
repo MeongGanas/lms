@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -8,13 +10,12 @@ Route::get('/', function () {
 })->name("home");
 
 Route::middleware("auth")->group(function () {
-    Route::get('/courses', function () {
-        return Inertia::render('User/Courses/Index');
-    });
+    Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/getAllCourses', [CourseController::class, 'getAll']);
+    Route::post('/courses/create', [CourseController::class, 'store']);
+    Route::post('/courses/join', [CourseController::class, 'join']);
 
-    Route::get('/tasks', function () {
-        return Inertia::render('User/Tasks/Index');
-    });
+    Route::resource('/tasks', TasksController::class);
 
     Route::get('/calendar', function () {
         return Inertia::render('User/Calendar/Index');

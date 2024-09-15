@@ -1,6 +1,6 @@
 import {
-    CourseCard,
-    JoinOrCreateCourseDialog,
+    CreateCourseDialog,
+    TeacherCourses,
 } from "@/Components/MyComponent/User/CourseComponent";
 import UserLayout from "@/Layouts/UserLayout";
 import { PageProps } from "@/types";
@@ -14,16 +14,9 @@ export default function CoursesIndex({ auth }: PageProps) {
             <div className="space-y-4">
                 <div className="flex justify-between">
                     <h1 className="text-2xl font-bold">My Courses</h1>
-                    <JoinOrCreateCourseDialog user={user} />
+                    {user && user.role === "teacher" && <CreateCourseDialog />}
                 </div>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                    <CourseCard />
-                    <CourseCard />
-                    <CourseCard />
-                    <CourseCard />
-                    <CourseCard />
-                    <CourseCard />
-                </div>
+                {user && user.role === "teacher" && <TeacherCourses />}
             </div>
         </UserLayout>
     );

@@ -1,6 +1,6 @@
 import {
     ContinueLearn,
-    JoinOrCreateCourseDialog,
+    CreateCourseDialog,
     RecentCourse,
 } from "@/Components/MyComponent/User/CourseComponent";
 import UserLayout from "@/Layouts/UserLayout";
@@ -14,12 +14,14 @@ export default function Index({ auth }: PageProps) {
         <UserLayout user={user}>
             <Head title="Home" />
 
-            <div
-                id="join-or-create"
-                className="flex items-center justify-center w-full py-20 rounded-xl bg-muted"
-            >
-                <JoinOrCreateCourseDialog user={user} />
-            </div>
+            {user && user.role === "teacher" && (
+                <div
+                    id="join-or-create"
+                    className="flex items-center justify-center w-full py-20 rounded-xl bg-muted"
+                >
+                    <CreateCourseDialog />
+                </div>
+            )}
 
             <div id="recent-section">
                 {!user && (
