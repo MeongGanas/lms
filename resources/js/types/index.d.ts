@@ -17,6 +17,16 @@ export interface Course {
     enrollment_key: string;
     image?: string;
     enrollments: Enrollment[];
+    teacher: User;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface RecentCourse {
+    id: string;
+    user_id: string;
+    course_id: string;
+    course: Course;
     created_at: string;
     updated_at: string;
 }

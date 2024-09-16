@@ -25,4 +25,14 @@ class RecentCourse extends Model
     public $incrementing = false;
 
     protected $guarded = ['id'];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

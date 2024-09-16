@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('recent_courses', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("task_id")->index();
-            $table->foreignUuid("student_id")->index();
-            $table->string("file_path");
+            $table->foreignUuid("user_id")->index();
+            $table->foreignUuid("course_id")->index();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('recent_courses');
     }
 };

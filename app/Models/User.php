@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\RecentCourse[] $recentCourses
+ */
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -64,5 +68,10 @@ class User extends Authenticatable
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class, 'student_id');
+    }
+
+    public function recentCourses()
+    {
+        return $this->hasMany(RecentCourse::class)->orderBy('updated_at', 'desc');
     }
 }

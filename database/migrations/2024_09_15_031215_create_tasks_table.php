@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("course_id");
+            $table->foreignUuid("course_id")->index();
             $table->string("title");
             $table->text("description");
             $table->dateTime("due_date");

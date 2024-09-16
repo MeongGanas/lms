@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -10,11 +9,6 @@ Route::get('/', function () {
 })->name("home");
 
 Route::middleware("auth")->group(function () {
-    Route::get('/courses', [CourseController::class, 'index']);
-    Route::get('/getAllCourses', [CourseController::class, 'getAll']);
-    Route::post('/courses/create', [CourseController::class, 'store']);
-    Route::post('/courses/join', [CourseController::class, 'join']);
-
     Route::resource('/tasks', TasksController::class);
 
     Route::get('/calendar', function () {
@@ -27,3 +21,4 @@ Route::middleware("auth")->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/course.php';

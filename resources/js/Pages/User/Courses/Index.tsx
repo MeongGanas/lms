@@ -1,7 +1,5 @@
-import {
-    CreateCourseDialog,
-    TeacherCourses,
-} from "@/Components/MyComponent/User/CourseComponent";
+import { TeacherCourses } from "@/Components/MyComponent/User/Course/AllCourses";
+import { CreateCourseDialog } from "@/Components/MyComponent/User/Course/CreateDialog";
 import UserLayout from "@/Layouts/UserLayout";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";

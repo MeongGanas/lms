@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -38,7 +39,26 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        //
+        return Inertia::render("User/Courses/Detail", [
+            "course" => $course
+        ]);
+    }
+
+    public function joinView(Course $course)
+    {
+        return Inertia::render("User/Courses/Join", [
+            "course" => $course
+        ]);
+    }
+
+    public function join(Course $course, Request $request)
+    {
+        $enrollment = Enrollment::create([
+            "course_id" => $course->id,
+            "student_id" => $request->user()->id,
+        ]);
+
+        return response()->json(["enrollment" => $enrollment]);
     }
 
     public function edit(Course $course)

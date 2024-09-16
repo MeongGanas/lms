@@ -30,6 +30,11 @@ class Course extends Model
 
     protected $guarded = ['id'];
 
+    public function recentCourse()
+    {
+        return $this->hasMany(RecentCourse::class);
+    }
+
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);

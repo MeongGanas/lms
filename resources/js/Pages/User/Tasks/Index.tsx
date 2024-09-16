@@ -1,4 +1,4 @@
-import { TaskCard } from "@/Components/MyComponent/User/TaskComponent";
+import { TaskCard } from "@/Components/MyComponent/User/Task/TaskCard";
 import { Accordion } from "@/Components/ui/accordion";
 import UserLayout from "@/Layouts/UserLayout";
 import { PageProps } from "@/types";

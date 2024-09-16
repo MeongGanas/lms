@@ -13,24 +13,17 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("teacher_id");
+            $table->foreignUuid("teacher_id")->index();
             $table->string("title");
             $table->string("enrollment_key");
             $table->string("image")->nullable();
             $table->timestamps();
         });
 
-        Schema::create('recent_courses', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->foreignUuid("student_id");
-            $table->foreignUuid("course_id");
-            $table->timestamps();
-        });
-
         Schema::create('enrollments', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("student_id");
-            $table->foreignUuid("course_id");
+            $table->foreignUuid("student_id")->index();
+            $table->foreignUuid("course_id")->index();
             $table->timestamps();
         });
     }
@@ -42,6 +35,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('courses');
         Schema::dropIfExists('enrollments');
-        Schema::dropIfExists('recent_cources');
     }
 };
