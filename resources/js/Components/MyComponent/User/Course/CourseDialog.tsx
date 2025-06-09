@@ -15,7 +15,7 @@ import { Plus } from "lucide-react";
 import { SyntheticEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-export function CreateCourseDialog() {
+export function CreateDialog() {
     const [title, setTitle] = useState("");
     const [key, setKey] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -81,6 +81,69 @@ export function CreateCourseDialog() {
                     <DialogFooter>
                         <Button disabled={isSubmitted} type="submit">
                             Create Now
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+export function JoinDialog({ course }: { course: Course }) {
+    const [key, setKey] = useState("");
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const submit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (key !== course.enrollment_key) {
+            toast.error("Enrollment key wrong!");
+            return;
+        }
+        setIsSubmitted(true);
+        const promise = axios.post(`/courses/${course.id}/join`);
+        toast.promise(promise, {
+            loading: "Joining the course...",
+            success: (res) => {
+                setIsSubmitted(false);
+                window.location.replace(`/courses/${course.id}`);
+                return "Joining course successfully";
+            },
+            error: (err) => {
+                setIsSubmitted(false);
+                console.log(err)
+                return err?.response?.data?.message || "Something went wrong";
+            },
+        });
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button className="w-full text-center">Join Now</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle className="text-left">
+                        {course.title}
+                    </DialogTitle>
+                    <DialogDescription className="text-left">
+                        Fill the enrollment key below to joining the course.
+                    </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={submit}>
+                    <div className="pb-4">
+                        <Input
+                            id="key"
+                            placeholder="Enrollment key"
+                            required
+                            min={2}
+                            max={255}
+                            onChange={(e) => setKey(e.target.value)}
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button disabled={isSubmitted} type="submit">
+                            Join Now
                         </Button>
                     </DialogFooter>
                 </form>

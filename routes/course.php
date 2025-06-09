@@ -11,6 +11,7 @@ Route::get('/', function () {
 
 Route::middleware("auth")->group(function () {
     Route::get('/getAllCourses', [CourseController::class, 'getAll']);
+    Route::get('/getMyCourses', [CourseController::class, 'getMyCourses']);
 
     Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecent']);
     Route::post('/setRecentCourse', [RecentCourseController::class, 'store']);

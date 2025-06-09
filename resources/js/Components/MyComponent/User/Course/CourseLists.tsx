@@ -1,24 +1,31 @@
 import { Course } from "@/types";
 import { StudentCourseCard, TeacherCourseCard } from "./CourseCard";
+import { Link } from "@inertiajs/react";
 
 export function TeacherCourseLists({ data }: { data: Course[] }) {
     return (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-            {data &&
-                data.map((course) => (
-                    <TeacherCourseCard key={course.id} course={course} />
-                ))}
-        </div>
+        <>
+            {data.length > 0 ? (
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    {data.map((course) => (
+                        <TeacherCourseCard key={course.id} course={course} />
+                    ))}
+                </div>
+            ) : <h1>You are not have any course.</h1>}
+        </>
     );
 }
 
 export function StudentCourseLists({ data }: { data: Course[] }) {
     return (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-            {data &&
-                data.map((course) => (
-                    <StudentCourseCard key={course.id} course={course} />
-                ))}
-        </div>
+        <>
+            {data.length > 0 ? (
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    {data.map((course) => (
+                        <StudentCourseCard key={course.id} course={course} />
+                    ))}
+                </div>
+            ) : <h1>You are not in any course. Please <Link href="/courses" className="underline">join</Link> a course.</h1>}
+        </>
     );
 }

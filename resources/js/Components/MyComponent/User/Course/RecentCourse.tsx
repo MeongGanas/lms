@@ -1,10 +1,11 @@
 import axios from "axios";
 import { StudentCourseLists, TeacherCourseLists } from "./CourseLists";
-import { Course, RecentCourse } from "@/types";
+import { Course } from "@/types";
 import { useQuery } from "react-query";
 
 export function RecentTeacherCourse() {
     const { data, isLoading } = useQuery({
+        queryKey: ['recent-teacher-courses'],
         queryFn: async () => {
             const response = await axios.get("/getRecentCourses");
             return (await response.data.courses) as Course[];
@@ -22,6 +23,7 @@ export function RecentTeacherCourse() {
 
 export function RecentStudentCourse() {
     const { data, isLoading } = useQuery({
+        queryKey: ['recent-student-courses'],
         queryFn: async () => {
             const response = await axios.get("/getRecentCourses");
             return (await response.data.courses) as Course[];

@@ -26,7 +26,7 @@ export default function UserLayout({
     user: User | null;
     children: ReactNode;
 }) {
-    const current_route = window.location.href;
+    const current_route = window.location.pathname;
 
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -47,7 +47,7 @@ export default function UserLayout({
                                 name="Home"
                                 Icon={Home}
                                 isActive={
-                                    current_route === "http://127.0.0.1:8000/"
+                                    current_route === "/"
                                 }
                                 href="/"
                             />

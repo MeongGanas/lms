@@ -1,28 +1,25 @@
 import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
 import { Head, Link } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     Form,
-    FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/Components/ui/form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
+import { FormInput, PasswordInputWithToggle } from "@/Components/MyComponent/FormInput";
 
 const loginSchema = z
     .object({
         firstname: z.string(),
         lastname: z.string().optional(),
         email: z.string().email("Email must be a valid email."),
-        phone_number: z.string(),
         password: z.string(),
         password_confirmation: z.string(),
     })
@@ -41,7 +38,6 @@ export default function Login() {
         defaultValues: {
             firstname: "",
             lastname: "",
-            phone_number: "",
             email: "",
             password: "",
             password_confirmation: "",
@@ -88,126 +84,27 @@ export default function Login() {
                         <div className="grid gap-2">
                             <h1 className="text-4xl font-bold">Sign up</h1>
                             <p className="text-muted-foreground">
-                                Let&apos;s get you all st up so you can access
+                                Let&apos;s get you all set up so you can access
                                 your personal account.
                             </p>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                                control={control}
-                                name="firstname"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>First Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="firstname"
-                                                placeholder="Your First name"
-                                                required
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={control}
-                                name="lastname"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>Last Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="lastname"
-                                                placeholder="Your Last Name"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            <FormInput control={control} name="firstname" label="First Name" required={true} placeholder="Your First Name" />
+                            <FormInput control={control} name="lastname" label="Last Name" placeholder="Your Last Name" />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                                control={control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="email"
-                                                type="email"
-                                                placeholder="your@email.com"
-                                                required
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={control}
-                                name="phone_number"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>Phone Number</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="phone_number"
-                                                placeholder="Your Phone Number"
-                                                required
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                        <FormInput control={control} name="email" label="Email" required={true} placeholder="Your Email" type="email" />
                         <FormField
                             control={control}
                             name="password"
                             render={({ field }) => (
                                 <FormItem className="grid gap-2">
                                     <Label htmlFor="password">Password</Label>
-                                    <FormControl>
-                                        <Input
-                                            id="password"
-                                            placeholder="******"
-                                            type="password"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                    <PasswordInputWithToggle field={field} id="password" />
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={control}
-                            name="password_confirmation"
-                            render={({ field }) => (
-                                <FormItem className="grid gap-2">
-                                    <Label htmlFor="password">
-                                        Password Confirmation
-                                    </Label>
-                                    <FormControl>
-                                        <Input
-                                            id="password"
-                                            placeholder="******"
-                                            type="password"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormInput control={control} name="password_confirmation" label="Confirm Password" required={true} placeholder="Confirm Password" type="password" />
                         <div className="grid gap-2">
                             <Button
                                 type="submit"

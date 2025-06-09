@@ -17,8 +17,14 @@ class CourseController extends Controller
 
     public function getAll()
     {
-        $user = Auth::user()->courses;
-        return response()->json(["courses" => $user]);
+        $courses = Course::all();
+        return response()->json(["courses" => $courses]);
+    }
+
+    public function getMyCorses()
+    {
+        $courses = Auth::user()->courses;
+        return response()->json(["courses" => $courses]);
     }
 
     public function store(Request $request)
@@ -53,9 +59,9 @@ class CourseController extends Controller
 
     public function join(Course $course, Request $request)
     {
-        $enrollment = Enrollment::create([
-            "course_id" => $course->id,
-            "student_id" => $request->user()->id,
+        $enrollment = Enrollment::firstOrCreate([
+            'course_id' => $course->id,
+            'student_id' => $request->user()->id,
         ]);
 
         return response()->json(["enrollment" => $enrollment]);

@@ -1,15 +1,13 @@
 import UserLayout from "@/Layouts/UserLayout";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
-import { CreateCourseDialog } from "@/Components/MyComponent/User/Course/CreateDialog";
 import {
     RecentStudentCourse,
     RecentTeacherCourse,
 } from "@/Components/MyComponent/User/Course/RecentCourse";
+import { CreateDialog } from "@/Components/MyComponent/User/Course/CourseDialog";
 
-export default function Index({ auth }: PageProps) {
-    const user = auth ? auth.user : null;
-
+export default function Index({ auth: { user } }: PageProps) {
     return (
         <UserLayout user={user}>
             <Head title="Home" />
@@ -19,7 +17,7 @@ export default function Index({ auth }: PageProps) {
                     id="join-or-create"
                     className="flex items-center justify-center w-full py-20 rounded-xl bg-muted"
                 >
-                    <CreateCourseDialog />
+                    <CreateDialog />
                 </div>
             )}
 

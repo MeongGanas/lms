@@ -1,12 +1,10 @@
 import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
 import { Head, Link } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     Form,
-    FormControl,
     FormField,
     FormItem,
     FormLabel,
@@ -16,6 +14,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
+import { FormInput, PasswordInputWithToggle } from "@/Components/MyComponent/FormInput";
 
 const loginSchema = z.object({
     email: z.string().email("Email must be a valid email."),
@@ -72,25 +71,7 @@ export default function Login() {
                                 Enter your email below to login to your account
                             </p>
                         </div>
-                        <FormField
-                            control={control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem className="grid gap-2">
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            placeholder="your@email.com"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormInput control={control} name="email" label="Email" type="email" placeholder="Enter your email" required={true} />
                         <FormField
                             control={control}
                             name="password"
@@ -107,26 +88,14 @@ export default function Login() {
                                             Forgot your password?
                                         </Link>
                                     </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="password"
-                                            placeholder="******"
-                                            type="password"
-                                            required
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                    <PasswordInputWithToggle field={field} id="password" />
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <div className="grid gap-2">
-                            <Button
-                                type="submit"
-                                disabled={isSubmitted}
-                                className="w-full"
-                            >
-                                Login
+                            <Button type="submit" disabled={isSubmitted} className="w-full">
+                                {isSubmitted ? "Logging in..." : "Login"}
                             </Button>
                         </div>
                         <div className="mt-4 text-sm text-center">
