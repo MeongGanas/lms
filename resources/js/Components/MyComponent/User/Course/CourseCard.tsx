@@ -65,7 +65,7 @@ export function PublicCourseCard({ user_id, course }: { course: Course; user_id:
 
     const alreadyEnrolled = course.enrollments.some(
         (enrollment) => enrollment.student_id === user_id
-    );
+    ) || course.teacher_id === user_id;
 
     return (
         <Card className="shadow-sm border-neutral-100 rounded-xl">
