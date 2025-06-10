@@ -23,8 +23,6 @@ Route::middleware("auth")->group(function () {
         Route::post('/courses/create', [CourseController::class, 'store']);
     });
 
-    Route::middleware("isStudent")->group(function () {
-        Route::get('/courses/{course}/join', [CourseController::class, 'joinView']);
-        Route::post('/courses/{course}/join', [CourseController::class, 'join']);
-    });
+    Route::get('/courses/{course}/enroll', [CourseController::class, 'enrollView']);
+    Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll']);
 });

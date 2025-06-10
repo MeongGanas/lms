@@ -45,7 +45,7 @@ export function CreateDialog() {
             <DialogTrigger asChild>
                 <Button className="flex items-center gap-1">
                     <Plus className="w-4 h-4" />
-                    <span className="hidden sm:block">Create Course</span>
+                    <span className="">Create Course</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

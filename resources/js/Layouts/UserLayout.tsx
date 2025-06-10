@@ -111,8 +111,7 @@ export default function UserLayout({
                                     name="Home"
                                     Icon={Home}
                                     isActive={
-                                        current_route ===
-                                        "http://127.0.0.1:8000/"
+                                        current_route === "/"
                                     }
                                     href="/"
                                 />

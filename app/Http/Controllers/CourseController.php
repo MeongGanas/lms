@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Enrollment;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use PharIo\Manifest\Author;
 
 class CourseController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         return Inertia::render('User/Courses/Index');
@@ -45,19 +50,31 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+        try {
+            $this->authorize("view", $course);
+        } catch (AuthorizationException $e) {
+            return redirect('/courses/' . $course->id . '/enroll');
+        }
+
         return Inertia::render("User/Courses/Detail", [
             "course" => $course
         ]);
     }
 
-    public function joinView(Course $course)
+    public function enrollView(Course $course)
     {
-        return Inertia::render("User/Courses/Join", [
+        try {
+            $this->authorize("enrollView", $course);
+        } catch (AuthorizationException $e) {
+            return redirect('/courses/' . $course->id);
+        }
+
+        return Inertia::render("User/Courses/enroll", [
             "course" => $course
         ]);
     }
 
-    public function join(Course $course, Request $request)
+    public function enroll(Course $course, Request $request)
     {
         $enrollment = Enrollment::firstOrCreate([
             'course_id' => $course->id,

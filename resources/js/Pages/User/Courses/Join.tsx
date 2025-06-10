@@ -8,11 +8,9 @@ import { SyntheticEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function CourseDetail({
-    auth,
+    auth: { user },
     course,
 }: PageProps<{ course: Course }>) {
-    const user = auth ? auth.user : null;
-
     const [enrollkey, setEnrollkey] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -20,27 +18,28 @@ export default function CourseDetail({
         e.preventDefault();
         setIsSubmitted(true);
 
-        if (enrollkey === course.enrollment_key) {
-            const promise = axios.post(`/courses/${course.id}/join`);
-            toast.promise(promise, {
-                loading: "Enroll the course...",
-                success: (res) => {
-                    console.log(res);
-                    setIsSubmitted(false);
-                    return "Successfully enroll the course";
-                },
-                error: (err) => {
-                    console.log(err);
-                    setIsSubmitted(false);
-                    return (
-                        err?.response?.data?.message || "Something went wrong"
-                    );
-                },
-            });
-        } else {
+        if (enrollkey !== course.enrollment_key) {
             toast.error("Enrollment key wrong!");
             setIsSubmitted(false);
+            return
         }
+
+        const promise = axios.post(`/courses/${course.id}/join`);
+        toast.promise(promise, {
+            loading: "Enroll the course...",
+            success: (res) => {
+                setIsSubmitted(false);
+                window.location.replace(`/courses/${course.id}`);
+                return "Successfully enroll the course";
+            },
+            error: (err) => {
+                console.log(err);
+                setIsSubmitted(false);
+                return (
+                    err?.response?.data?.message || "Something went wrong"
+                );
+            },
+        });
     };
 
     return (
