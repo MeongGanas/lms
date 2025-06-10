@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/react";
 import { JoinDialog } from "./CourseDialog";
 
 export function StudentCourseCard({ course }: { course: Course }) {
-    const teacherName = `${course.teacher.firstname + course.teacher.lastname}`;
+    const teacherName = course.teacher.lastname ? `${course.teacher.firstname + course.teacher.lastname}` : course.teacher.firstname;
     return (
         <Link href={`/courses/${course.id}`}>
             <Card className="shadow-sm border-neutral-100 rounded-xl">
@@ -30,7 +30,7 @@ export function StudentCourseCard({ course }: { course: Course }) {
                     <Progress value={80} />
                 </CardContent>
                 <CardFooter className="p-3">
-                    <h4 className="text-sm">{course.teacher.firstname}</h4>
+                    <h4 className="text-sm">{teacherName}</h4>
                 </CardFooter>
             </Card>
         </Link>
