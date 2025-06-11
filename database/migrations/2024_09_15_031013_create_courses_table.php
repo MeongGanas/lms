@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("teacher_id")->index();
+            $table->foreignUuid("teacher_id")->index()->constrained("users", "id")->cascadeOnDelete();
             $table->string("title");
             $table->string("enrollment_key");
             $table->string("image")->nullable();
@@ -22,8 +22,8 @@ return new class extends Migration
 
         Schema::create('enrollments', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("student_id")->index();
-            $table->foreignUuid("course_id")->index();
+            $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
+            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

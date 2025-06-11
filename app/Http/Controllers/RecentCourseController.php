@@ -10,7 +10,7 @@ class RecentCourseController extends Controller
 {
     public function getRecent()
     {
-        $recentCourses = Auth::user()->recentCourses()->with('course')->get()->map(function ($recentCourse) {
+        $recentCourses = \App\Models\User::find(Auth::id())->recentCourses()->with('course')->get()->map(function ($recentCourse) {
             return $recentCourse->course;
         });
 

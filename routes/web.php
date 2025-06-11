@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,8 +8,6 @@ Route::get('/', function () {
 })->name("home");
 
 Route::middleware("auth")->group(function () {
-    Route::resource('/tasks', TasksController::class);
-
     Route::get('/calendar', function () {
         return Inertia::render('User/Calendar/Index');
     });

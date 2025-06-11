@@ -7,7 +7,7 @@ import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function CourseDetail({
+export default function EnrollCourse({
     auth: { user },
     course,
 }: PageProps<{ course: Course }>) {
@@ -24,7 +24,7 @@ export default function CourseDetail({
             return
         }
 
-        const promise = axios.post(`/courses/${course.id}/join`);
+        const promise = axios.post(`/courses/${course.id}/enroll`);
         toast.promise(promise, {
             loading: "Enroll the course...",
             success: (res) => {

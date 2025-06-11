@@ -68,7 +68,7 @@ class CourseController extends Controller
             return redirect('/courses/' . $course->id);
         }
 
-        return Inertia::render("User/Courses/enroll", [
+        return Inertia::render("User/Courses/Enroll", [
             "course" => $course
         ]);
     }

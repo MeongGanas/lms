@@ -25,4 +25,9 @@ class Submission extends Model
     public $incrementing = false;
 
     protected $guarded = ['id'];
+
+    public function content()
+    {
+        return $this->belongsTo(Content::class);
+    }
 }

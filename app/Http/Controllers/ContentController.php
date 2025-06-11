@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tasks;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Models\Content;
+use App\Http\Requests\StoreContentRequest;
+use App\Http\Requests\UpdateContentRequest;
 
-class TasksController extends Controller
+class ContentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('User/Tasks/Index');
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class TasksController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreContentRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class TasksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tasks $tasks)
+    public function show(Content $content)
     {
         //
     }
@@ -43,7 +43,7 @@ class TasksController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tasks $tasks)
+    public function edit(Content $content)
     {
         //
     }
@@ -51,7 +51,7 @@ class TasksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tasks $tasks)
+    public function update(UpdateContentRequest $request, Content $content)
     {
         //
     }
@@ -59,7 +59,7 @@ class TasksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tasks $tasks)
+    public function destroy(Content $content)
     {
         //
     }

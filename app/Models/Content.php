@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Tasks extends Model
+class Content extends Model
 {
+    /** @use HasFactory<\Database\Factories\ContentFactory> */
     use HasFactory;
 
     protected static function boot()
@@ -21,8 +22,10 @@ class Tasks extends Model
         });
     }
 
-    protected $keyType = 'string';
-    public $incrementing = false;
-
     protected $guarded = ['id'];
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('recent_courses', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("user_id")->index();
-            $table->foreignUuid("course_id")->index();
+            $table->foreignUuid("user_id")->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('submissions', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("task_id")->index();
-            $table->foreignUuid("student_id")->index();
+            $table->foreignUuid("content_id")->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
             $table->string("file_path");
             $table->timestamps();
         });

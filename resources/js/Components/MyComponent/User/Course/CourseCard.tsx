@@ -71,27 +71,29 @@ export function PublicCourseCard({ user_id, course }: { course: Course; user_id:
     ) || course.teacher_id === user_id;
 
     return (
-        <Card className="shadow-sm border-neutral-100 rounded-xl">
-            <CardHeader className="p-3">
-                <img
-                    src="/asset/course_placeholder.png"
-                    className="rounded-xl"
-                    alt="placeholder"
-                />
-            </CardHeader>
-            <CardContent className="px-3 py-1 mb-2">
-                <CardTitle className="mb-2 text-lg">
-                    {course.title}
-                </CardTitle>
-                <h4 className="text-sm">{teacherName}</h4>
-            </CardContent>
-            <CardFooter className="p-3">
-                {!alreadyEnrolled ? (
-                    <JoinDialog course={course} />
-                ) : (
-                    <Button className="w-full text-center" disabled>Joined</Button>
-                )}
-            </CardFooter>
-        </Card >
+        <Link href={`/courses/${course.id}`}>
+            <Card className="shadow-sm border-neutral-100 rounded-xl">
+                <CardHeader className="p-3">
+                    <img
+                        src="/asset/course_placeholder.png"
+                        className="rounded-xl"
+                        alt="placeholder"
+                    />
+                </CardHeader>
+                <CardContent className="px-3 py-1 mb-2">
+                    <CardTitle className="mb-2 text-lg">
+                        {course.title}
+                    </CardTitle>
+                    <h4 className="text-sm">{teacherName}</h4>
+                </CardContent>
+                <CardFooter className="p-3">
+                    {!alreadyEnrolled ? (
+                        <JoinDialog course={course} />
+                    ) : (
+                        <Button className="w-full text-center" disabled>Joined</Button>
+                    )}
+                </CardFooter>
+            </Card>
+        </Link>
     );
 }
