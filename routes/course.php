@@ -11,7 +11,6 @@ Route::get('/', function () {
 
 Route::middleware("auth")->group(function () {
     Route::get('/getAllCourses', [CourseController::class, 'getAll']);
-    Route::get('/getMyCourses', [CourseController::class, 'getMyCourses']);
 
     Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecent']);
     Route::post('/setRecentCourse', [RecentCourseController::class, 'store']);
@@ -25,4 +24,6 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/courses/{course}/enroll', [CourseController::class, 'enrollView']);
     Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll']);
+
+    Route::get('/course/search', [CourseController::class, 'searchCourse']);
 });

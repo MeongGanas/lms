@@ -5,11 +5,9 @@ import axios from "axios";
 import { useEffect } from "react";
 
 export default function CourseDetail({
-    auth,
+    auth: { user },
     course,
 }: PageProps<{ course: Course }>) {
-    const user = auth ? auth.user : null;
-
     useEffect(() => {
         axios.post("/setRecentCourse", { course_id: course.id });
     }, [course]);

@@ -13,6 +13,8 @@ import { JoinDialog } from "./CourseDialog";
 
 export function StudentCourseCard({ course }: { course: Course }) {
     const teacherName = course.teacher.lastname ? `${course.teacher.firstname + course.teacher.lastname}` : course.teacher.firstname;
+    const progress = 0
+
     return (
         <Link href={`/courses/${course.id}`}>
             <Card className="shadow-sm border-neutral-100 rounded-xl">
@@ -23,14 +25,15 @@ export function StudentCourseCard({ course }: { course: Course }) {
                         alt="placeholder"
                     />
                 </CardHeader>
-                <CardContent className="px-3 py-1">
-                    <CardTitle className="mb-3 text-lg">
+                <CardContent className="px-3 py-1 space-y-1">
+                    <h4 className="text-sm text-gray-500">{teacherName}</h4>
+                    <CardTitle className="text-lg">
                         {course.title}
                     </CardTitle>
-                    <Progress value={80} />
                 </CardContent>
-                <CardFooter className="p-3">
-                    <h4 className="text-sm">{teacherName}</h4>
+                <CardFooter className="px-3 pt-1 block space-y-2">
+                    <Progress value={0} />
+                    <h4 className="text-sm text-gray-500">{progress}% complete</h4>
                 </CardFooter>
             </Card>
         </Link>

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use PharIo\Manifest\Author;
 
 class CourseController extends Controller
 {
@@ -26,9 +25,9 @@ class CourseController extends Controller
         return response()->json(["courses" => $courses]);
     }
 
-    public function getMyCorses()
+    public function searchCourse(Request $request)
     {
-        $courses = Auth::user()->courses;
+        $courses = Course::where('title', 'like', '%' . $request->query('query') . '%')->get();
         return response()->json(["courses" => $courses]);
     }
 

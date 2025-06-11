@@ -70,6 +70,9 @@ class User extends Authenticatable
         return $this->hasMany(Enrollment::class, 'student_id');
     }
 
+    /**
+     * @property \Illuminate\Database\Eloquent\Collection|\App\Models\RecentCourse[] $recentCourses
+     */
     public function recentCourses()
     {
         return $this->hasMany(RecentCourse::class)->orderBy('updated_at', 'desc');
