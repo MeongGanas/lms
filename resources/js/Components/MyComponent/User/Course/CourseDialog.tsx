@@ -35,6 +35,7 @@ export function CreateDialog() {
             },
             error: (err) => {
                 setIsSubmitted(false);
+                console.log(err)
                 return err?.response?.data?.message || "Something went wrong";
             },
         });
@@ -100,7 +101,7 @@ export function JoinDialog({ course }: { course: Course }) {
             return;
         }
         setIsSubmitted(true);
-        const promise = axios.post(`/courses/${course.id}/join`);
+        const promise = axios.post(`/courses/${course.id}/enroll`);
         toast.promise(promise, {
             loading: "Joining the course...",
             success: (res) => {

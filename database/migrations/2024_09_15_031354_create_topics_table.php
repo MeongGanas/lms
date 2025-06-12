@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("content_id")->index()->constrained()->cascadeOnDelete();
-            $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
-            $table->string("file_path");
-            $table->integer("score")->nullable();
+            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
+            $table->string("title")->unique();
+            $table->integer("order");
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('topics');
     }
 };

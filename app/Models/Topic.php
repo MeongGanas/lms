@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Content extends Model
+class Topic extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContentFactory> */
+    /** @use HasFactory<\Database\Factories\TopicFactory> */
     use HasFactory;
 
     protected static function boot()
@@ -27,13 +27,13 @@ class Content extends Model
 
     protected $guarded = ['id'];
 
-    public function topic()
+    public function course()
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(Course::class);
     }
 
-    public function submissions()
+    public function contents()
     {
-        return $this->hasMany(Submission::class);
+        return $this->hasMany(Content::class);
     }
 }

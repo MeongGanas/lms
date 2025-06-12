@@ -6,7 +6,6 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -33,6 +32,8 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize("create", Course::class);
+
         $request->validate([
             "title" => "required|min:2|max:255",
             "enrollment_key" => "required|min:2|max:255"
@@ -56,7 +57,7 @@ class CourseController extends Controller
         }
 
         return Inertia::render("User/Courses/Detail", [
-            "course" => $course
+            "course" => $course->load('topics')
         ]);
     }
 

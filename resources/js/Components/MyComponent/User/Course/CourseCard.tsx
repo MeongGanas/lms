@@ -71,29 +71,29 @@ export function PublicCourseCard({ user_id, course }: { course: Course; user_id:
     ) || course.teacher_id === user_id;
 
     return (
-        <Link href={`/courses/${course.id}`}>
-            <Card className="shadow-sm border-neutral-100 rounded-xl">
-                <CardHeader className="p-3">
+        <Card className="shadow-sm border-neutral-100 rounded-xl">
+            <Link href={`/courses/${course.id}`}>
+                <CardHeader className="px-3 pb-2">
                     <img
                         src="/asset/course_placeholder.png"
                         className="rounded-xl"
                         alt="placeholder"
                     />
                 </CardHeader>
-                <CardContent className="px-3 py-1 mb-2">
-                    <CardTitle className="mb-2 text-lg">
+                <CardContent className="px-3 py-1 space-y-1">
+                    <h4 className="text-sm">{teacherName}</h4>
+                    <CardTitle className="text-lg">
                         {course.title}
                     </CardTitle>
-                    <h4 className="text-sm">{teacherName}</h4>
                 </CardContent>
-                <CardFooter className="p-3">
-                    {!alreadyEnrolled ? (
-                        <JoinDialog course={course} />
-                    ) : (
-                        <Button className="w-full text-center" disabled>Joined</Button>
-                    )}
-                </CardFooter>
-            </Card>
-        </Link>
+            </Link>
+            <CardFooter className="px-3 pt-3">
+                {!alreadyEnrolled ? (
+                    <JoinDialog course={course} />
+                ) : (
+                    <Button className="w-full text-center" disabled>Joined</Button>
+                )}
+            </CardFooter>
+        </Card>
     );
 }

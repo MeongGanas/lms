@@ -11,17 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topics', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
-            $table->string("title")->unique();
-            $table->integer("order");
-            $table->timestamps();
-        });
-
         Schema::create('contents', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
             $table->foreignUuid("topic_id")->index()->constrained()->cascadeOnDelete();
             $table->string("title");
             $table->string("file_path")->nullable();
