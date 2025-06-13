@@ -98,7 +98,7 @@ export default function Login() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem className="grid gap-2">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">Password <span className="text-red-500">*</span></Label>
                                     <PasswordInputWithToggle field={field} id="password" />
                                     <FormMessage />
                                 </FormItem>

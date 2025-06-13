@@ -27,8 +27,8 @@ Route::middleware("auth")->group(function () {
     Route::post('/course/topics/create ', [TopicController::class, 'store']);
 
     // contents
-    Route::get('/courses/{course}/topics/{topic}/contents/create', [ContentController::class, 'create']);
-    Route::post('/courses/{course}/topics/{topic}/contents/create', [ContentController::class, 'store']);
+    Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
+    Route::post('/topics/contents/create', [ContentController::class, 'store']);
 
     // enrollment
     Route::get('/courses/{course}/enroll', [CourseController::class, 'enrollView']);

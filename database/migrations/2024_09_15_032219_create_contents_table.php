@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("title");
             $table->text("description")->nullable();
             $table->string("file_path")->nullable();
+            $table->string("external_url")->nullable();
             $table->enum("type", ['material', 'assignment', 'quiz'])->default('material');
             $table->integer("order");
             $table->dateTime('deadline')->nullable();

@@ -25,7 +25,10 @@ export function FormInput({ control, name, label, type = "text", placeholder, re
             name={name}
             render={({ field }) => (
                 <FormItem className="grid gap-2">
-                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <FormLabel htmlFor={name}>
+                        <span className="mr-1">{label}</span>
+                        {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
+                    </FormLabel>
                     <FormControl>
                         <div className="relative">
                             <Input
@@ -88,7 +91,10 @@ export function DateInput({ control, name, label, required = false }: {
             name={name}
             render={({ field }) => (
                 <FormItem>
-                    <FormLabel>{label}</FormLabel>
+                    <FormLabel>
+                        <span className="mr-1">{label}</span>
+                        {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
+                    </FormLabel>
                     <Popover>
                         <PopoverTrigger asChild>
                             <FormControl>
@@ -142,16 +148,19 @@ export function SelectInput({ control, name, label, placeholder, required = fals
             name={name}
             render={({ field }) => (
                 <FormItem>
-                    <FormLabel>{label}</FormLabel>
+                    <FormLabel>
+                        <span className="mr-1">{label}</span>
+                        {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
+                    </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value} required={required}>
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder={placeholder} />
+                                <SelectValue placeholder={placeholder} id={name} />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {selectItems.map((item) => (
-                                <SelectItem value={item.value}>{item.label}</SelectItem>
+                            {selectItems.map((item, i) => (
+                                <SelectItem value={item.value} key={i}>{item.label}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
@@ -176,9 +185,13 @@ export function FormTextarea({ control, name, label, placeholder, required = fal
             name={name}
             render={({ field }) => (
                 <FormItem className="grid gap-2">
-                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <FormLabel htmlFor={name}>
+                        <span className="mr-1">{label}</span>
+                        {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
+                    </FormLabel>
                     <FormControl>
                         <Textarea
+                            id={name}
                             required={required}
                             placeholder={placeholder}
                             className="resize-none h-32"

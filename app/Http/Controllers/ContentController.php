@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
-use App\Http\Requests\StoreContentRequest;
-use App\Http\Requests\UpdateContentRequest;
 use App\Models\Course;
 use App\Models\Topic;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class ContentController extends Controller
@@ -25,9 +25,28 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContentRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'file_path' => ['nullable', 'file', 'max:10240'],
+            'external_url' => ['nullable', 'url'],
+            'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
+            'deadline' => ['nullable', 'date', 'after_or_equal:now'],
+            'topic_id' => ['required', 'uuid', 'exists:topics,id'],
+        ]);
+
+        if ($request->hasFile('file_path')) {
+            $validatedData['file_path'] = $request->file('file_path')->store('contents');
+        }
+
+        $lastOrder = Content::where('topic_id', $validatedData['topic_id'])->max('order') ?? 0;
+        $validatedData['order'] = $lastOrder + 1;
+
+        $content = Content::create($validatedData);
+
+        return response()->json(['content' => $content]);
     }
 
     /**
@@ -49,7 +68,7 @@ class ContentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateContentRequest $request, Content $content)
+    public function update(Request $request, Content $content)
     {
         //
     }

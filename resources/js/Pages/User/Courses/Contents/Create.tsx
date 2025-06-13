@@ -14,7 +14,7 @@ import { z } from "zod";
 const contentSchema = z.object({
     title: z.string(),
     type: z.string(),
-    file: z
+    file_path: z
         .instanceof(File)
         .refine((file) => file.size <= 5 * 1024 * 1024, {
             message: "File must be less than 5MB",
@@ -23,38 +23,41 @@ const contentSchema = z.object({
             message: "Only PDF, PNG, or JPEG files are allowed",
         })
         .optional(),
+    external_url: z.string().url().optional(),
+    description: z.string().optional(),
     deadline: z.date().optional()
 })
 
 type ContentSchema = z.infer<typeof contentSchema>
 
-export default function Create({ auth: { user }, course, topic }: PageProps<{ course: Course, topic: Topic }>) {
+export default function Create({ auth: { user }, topic }: PageProps<{ topic: Topic }>) {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const form = useForm<ContentSchema>({
         resolver: zodResolver(contentSchema),
         defaultValues: {
             title: "",
-            type: "",
         }
     });
 
     const { handleSubmit, control } = form;
 
     const submit = handleSubmit((values) => {
+        console.log(values)
         setIsSubmitted(true);
-        // const promise = axios.post(`/topics/${topic.id}/contents`, values);
-        // toast.promise(promise, {
-        //     loading: "Creating content...",
-        //     success: (res) => {
-        //         setIsSubmitted(false);
-        //         return "Content created successfully";
-        //     },
-        //     error: (err) => {
-        //         setIsSubmitted(false);
-        //         return err?.response?.data?.message || "Something went wrong";
-        //     },
-        // });
+        const promise = axios.post(`/topics/contents/create`, { ...values, topic_id: topic.id });
+        toast.promise(promise, {
+            loading: "Creating content...",
+            success: (res) => {
+                console.log(res.data)
+                setIsSubmitted(false);
+                return "Content created successfully";
+            },
+            error: (err) => {
+                setIsSubmitted(false);
+                return err?.response?.data?.message || "Something went wrong";
+            },
+        });
     });
 
     return (
@@ -75,11 +78,13 @@ export default function Create({ auth: { user }, course, topic }: PageProps<{ co
 
                     <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required />
 
-                    <FormInput control={control} name="file" label="Attachment" type="file" />
+                    <FormInput control={control} name="file_path" label="File Attachment" type="file" />
 
-                    <div className="grid md:grid-cols-2 gap-5">
+                    <FormInput control={control} name="external_url" label="Attachment Link" type="external_url" placeholder="Enter your attachment link like youtube etc" />
+
+                    <div className="grid sm:grid-cols-2 gap-5">
                         <DateInput control={control} name="deadline" label="Deadline" />
-                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required selectItems={[
+                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
                             { value: "assignment", label: "Assignment" },
                             { value: "quiz", label: "Quiz" },
                             { value: "material", label: "Material" },
@@ -89,7 +94,7 @@ export default function Create({ auth: { user }, course, topic }: PageProps<{ co
                     <FormTextarea control={control} name="description" label="Description" placeholder="Enter your content description" />
 
                     <div className="flex gap-2">
-                        <Button type="button" disabled={isSubmitted} className="w-fit border-black border bg-transparent text-black hover:bg-black/10" onClick={() => router.replace(`/courses/${course.id}`)}>
+                        <Button type="button" disabled={isSubmitted} className="w-fit border-black/10 border bg-transparent text-black hover:bg-black/10" onClick={() => window.history.back()}>
                             Back
                         </Button>
                         <Button type="submit" disabled={isSubmitted} className="w-fit">

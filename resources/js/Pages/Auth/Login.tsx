@@ -79,7 +79,7 @@ export default function Login() {
                                 <FormItem className="grid gap-2">
                                     <FormLabel className="flex items-center">
                                         <Label htmlFor="password">
-                                            Password
+                                            Password <span className="text-red-500">*</span>
                                         </Label>
                                         <Link
                                             href="/forgot-password"

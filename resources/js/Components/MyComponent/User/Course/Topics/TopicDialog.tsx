@@ -43,7 +43,7 @@ export default function CreateTopic({ course_id }: { course_id: string }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="w-full text-center bg-transparent border-black border text-black hover:bg-black/10">Add Topic</Button>
+                <Button className="w-full text-center bg-transparent border-black/10 border text-black hover:bg-black/10">Add Topic</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

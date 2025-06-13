@@ -51,6 +51,20 @@ export interface Topic {
     updated_at: string;
 }
 
+export interface Content {
+    id: string;
+    topic_id: string;
+    title: string;
+    type: string;
+    file_path?: string;
+    external_url?: string;
+    description?: string;
+    deadline?: string;
+    order: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
