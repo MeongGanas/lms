@@ -45,29 +45,24 @@ export default function CourseDetail({
                 </BreadcrumbList>
             </Breadcrumb>
             <h1 className="font-bold text-3xl">{course.title}</h1>
+
             {user.role === 'teacher' && (
-                <TeacherView course={course} />
+                <CreateTopic course_id={course.id} />
             )}
 
-
-        </UserLayout>
-    );
-}
-
-function TeacherView({ course }: { course: Course }) {
-    return (
-        <>
-            <CreateTopic course_id={course.id} />
             {course.topics.length > 0 && (
                 course.topics.map((topic) => (
                     <div className="w-full p-5 border shadow-sm rounded-xl space-y-4">
                         <h1 className="font-semibold text-xl">{topic.title}</h1>
-                        <Button asChild className="w-full text-center bg-transparent border-black border text-black hover:bg-black/10">
-                            <Link href={`/topics/${topic.id}/contents/create`}>Add Content</Link>
-                        </Button>
+                        {user.role === "teacher" && (
+                            <Button asChild className="w-full text-center bg-transparent border-black border text-black hover:bg-black/10">
+                                <Link href={`/courses/${course.id}/topics/${topic.id}/contents/create`}>Add Content</Link>
+                            </Button>
+                        )}
                     </div>
                 ))
             )}
-        </>
-    )
+
+        </UserLayout>
+    );
 }

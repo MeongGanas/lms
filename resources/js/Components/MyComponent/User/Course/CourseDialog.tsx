@@ -10,6 +10,7 @@ import {
 } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Course } from "@/types";
+import { router } from "@inertiajs/react";
 import axios from "axios";
 import { Plus } from "lucide-react";
 import { SyntheticEvent, useState } from "react";
@@ -30,7 +31,7 @@ export function CreateDialog() {
             success: (res) => {
                 setIsSubmitted(false);
                 const course = res.data.course as Course;
-                window.location.replace(`/courses/${course.id}`);
+                router.replace(`/courses/${course.id}`);
                 return "Course created successfully";
             },
             error: (err) => {
@@ -106,7 +107,7 @@ export function JoinDialog({ course }: { course: Course }) {
             loading: "Joining the course...",
             success: (res) => {
                 setIsSubmitted(false);
-                window.location.replace(`/courses/${course.id}`);
+                router.replace(`/courses/${course.id}`);
                 return "Joining course successfully";
             },
             error: (err) => {

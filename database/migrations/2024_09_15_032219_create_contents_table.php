@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->foreignUuid("topic_id")->index()->constrained()->cascadeOnDelete();
             $table->string("title");
+            $table->text("description")->nullable();
             $table->string("file_path")->nullable();
             $table->enum("type", ['material', 'assignment', 'quiz'])->default('material');
             $table->integer("order");

@@ -1,10 +1,10 @@
-import { FormInput } from "@/Components/MyComponent/FormInput";
+import { DateInput, FormInput, FormTextarea, SelectInput } from "@/Components/MyComponent/FormInput";
 import { Button } from "@/Components/ui/button";
 import { Form } from "@/Components/ui/form";
 import UserLayout from "@/Layouts/UserLayout";
-import { PageProps } from "@/types";
+import { Course, PageProps, Topic } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,12 +23,12 @@ const contentSchema = z.object({
             message: "Only PDF, PNG, or JPEG files are allowed",
         })
         .optional(),
-    deadline: z.date()
+    deadline: z.date().optional()
 })
 
 type ContentSchema = z.infer<typeof contentSchema>
 
-export default function Create({ auth: { user } }: PageProps) {
+export default function Create({ auth: { user }, course, topic }: PageProps<{ course: Course, topic: Topic }>) {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const form = useForm<ContentSchema>({
@@ -36,7 +36,6 @@ export default function Create({ auth: { user } }: PageProps) {
         defaultValues: {
             title: "",
             type: "",
-            deadline: new Date(),
         }
     });
 
@@ -65,7 +64,7 @@ export default function Create({ auth: { user } }: PageProps) {
             <Form {...form}>
                 <form
                     onSubmit={submit}
-                    className="grid gap-6"
+                    className="grid gap-5"
                 >
                     <div className="grid gap-2">
                         <h1 className="text-2xl font-bold">Create Content for topic name</h1>
@@ -74,10 +73,23 @@ export default function Create({ auth: { user } }: PageProps) {
                         </p>
                     </div>
 
-                    <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required={true} />
+                    <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required />
+
+                    <FormInput control={control} name="file" label="Attachment" type="file" />
+
+                    <div className="grid md:grid-cols-2 gap-5">
+                        <DateInput control={control} name="deadline" label="Deadline" />
+                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required selectItems={[
+                            { value: "assignment", label: "Assignment" },
+                            { value: "quiz", label: "Quiz" },
+                            { value: "material", label: "Material" },
+                        ]} />
+                    </div>
+
+                    <FormTextarea control={control} name="description" label="Description" placeholder="Enter your content description" />
 
                     <div className="flex gap-2">
-                        <Button type="button" disabled={isSubmitted} className="w-fit border-black border bg-transparent text-black hover:bg-black/10">
+                        <Button type="button" disabled={isSubmitted} className="w-fit border-black border bg-transparent text-black hover:bg-black/10" onClick={() => router.replace(`/courses/${course.id}`)}>
                             Back
                         </Button>
                         <Button type="submit" disabled={isSubmitted} className="w-fit">

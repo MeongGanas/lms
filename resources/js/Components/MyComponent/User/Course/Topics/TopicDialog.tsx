@@ -1,6 +1,7 @@
 import { SyntheticEvent, useState } from "react";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -12,9 +13,11 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { router } from "@inertiajs/react";
 
 export default function CreateTopic({ course_id }: { course_id: string }) {
     const [title, setTitle] = useState("")
+    const [open, setOpen] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const submit = (e: SyntheticEvent) => {
@@ -26,7 +29,8 @@ export default function CreateTopic({ course_id }: { course_id: string }) {
             loading: "Create the course...",
             success: (res) => {
                 setIsSubmitted(false);
-                window.location.replace(`/courses/${course_id}`);
+                router.replace(`/courses/${course_id}`);
+                setOpen(false);
                 return "Create topic successfully";
             },
             error: (err) => {
@@ -37,7 +41,7 @@ export default function CreateTopic({ course_id }: { course_id: string }) {
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className="w-full text-center bg-transparent border-black border text-black hover:bg-black/10">Add Topic</Button>
             </DialogTrigger>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Http\Requests\StoreContentRequest;
 use App\Http\Requests\UpdateContentRequest;
+use App\Models\Course;
+use App\Models\Topic;
 use Inertia\Inertia;
 
 class ContentController extends Controller
@@ -12,9 +14,12 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Course $course, Topic $topic)
     {
-        return Inertia::render('User/Courses/Contents/Create');
+        return Inertia::render('User/Courses/Contents/Create', [
+            'topic' => $topic,
+            'course' => $course
+        ]);
     }
 
     /**
