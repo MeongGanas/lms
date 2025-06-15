@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: lms_app
+        working_dir: /var/www
+        volumes:
+            - .:/var/www
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+        networks:
+            - laravel
+
+    db:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: learning_management_system
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD: root
+            MYSQL_USER: lms
+        ports:
+            - "3306:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - laravel
+
+    node:
+        image: node:20
+        container_name: node
+        working_dir: /var/www
+        volumes:
+            - .:/var/www
+        command: ["tail", "-f", "/dev/null"]
+        networks:
+            - laravel
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+        networks:
+            - laravel
+
+networks:
+    laravel:
+
+volumes:
+    dbdata:

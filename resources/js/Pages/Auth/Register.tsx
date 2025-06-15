@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { FormInput, PasswordInputWithToggle } from "@/Components/MyComponent/FormInput";
 
 const loginSchema = z
