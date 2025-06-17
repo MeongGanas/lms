@@ -37,8 +37,10 @@ services:
         container_name: node
         working_dir: /var/www
         volumes:
-            - .:/var/www
+            - .:/var/www:delegated
         command: ["tail", "-f", "/dev/null"]
+        ports:
+            - "5173:5173"
         networks:
             - laravel
 
