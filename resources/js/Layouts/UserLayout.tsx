@@ -84,7 +84,7 @@ export default function UserLayout({
                 </div>
             </div>
             <div className="flex flex-col">
-                <header className="flex h-14 items-center gap-4 px-4 lg:h-[60px] lg:px-6 sticky top-0 bg-white border-b">
+                <header className="flex h-14 items-center gap-4 px-2 lg:h-[60px] lg:px-6 sticky top-0 bg-white border-b">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button
@@ -157,7 +157,7 @@ export default function UserLayout({
                     </div>
                     <UserDropdown user={user} />
                 </header>
-                <main className="flex flex-col flex-1 gap-4 p-4 max-w-screen-2xl lg:gap-6 lg:p-6">
+                <main className="flex flex-col flex-1 gap-4 p-2 sm:p-4 max-w-screen-2xl lg:gap-6 lg:p-6">
                     {children}
                 </main>
             </div>
