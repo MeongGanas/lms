@@ -1,5 +1,5 @@
 import { Button } from "@/Components/ui/button";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,27 +14,15 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { Label } from "@/Components/ui/label";
 import { FormInput, PasswordInputWithToggle } from "@/Components/MyComponent/FormInput";
+import { registerSchema } from "@/lib/validation/schemas";
 
-const loginSchema = z
-    .object({
-        firstname: z.string(),
-        lastname: z.string().optional(),
-        email: z.string().email("Email must be a valid email."),
-        password: z.string(),
-        password_confirmation: z.string(),
-    })
-    .refine((data) => data.password === data.password_confirmation, {
-        message: "Password and confirm password don't match",
-        path: ["password_confirmation"],
-    });
+type RegisterSchema = z.infer<typeof registerSchema>;
 
-type LoginSchema = z.infer<typeof loginSchema>;
-
-export default function Login() {
+export default function Register() {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const form = useForm<LoginSchema>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<RegisterSchema>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             firstname: "",
             lastname: "",
@@ -55,7 +43,7 @@ export default function Login() {
             loading: "Loading...",
             success: () => {
                 setIsSubmitted(false);
-                window.location.replace("/login");
+                router.replace("/login");
                 return "Register Success!";
             },
             error: (err) => {
@@ -111,7 +99,7 @@ export default function Login() {
                                 disabled={isSubmitted}
                                 className="w-full"
                             >
-                                Register
+                                {isSubmitted ? "Registering..." : "Register"}
                             </Button>
                         </div>
                         <div className="mt-4 text-sm text-center">

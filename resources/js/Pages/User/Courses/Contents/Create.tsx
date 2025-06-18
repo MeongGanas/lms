@@ -2,31 +2,15 @@ import { DateInput, FormInput, FormTextarea, SelectInput } from "@/Components/My
 import { Button } from "@/Components/ui/button";
 import { Form } from "@/Components/ui/form";
 import UserLayout from "@/Layouts/UserLayout";
-import { Course, PageProps, Topic } from "@/types";
+import { contentSchema } from "@/lib/validation/schemas";
+import { PageProps, Topic } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Head, router } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-
-const contentSchema = z.object({
-    title: z.string(),
-    type: z.string(),
-    file_path: z
-        .instanceof(File)
-        .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: "File must be less than 5MB",
-        })
-        .refine((file) => ["application/pdf", "image/png", "image/jpeg"].includes(file.type), {
-            message: "Only PDF, PNG, or JPEG files are allowed",
-        })
-        .optional(),
-    external_url: z.string().url().optional(),
-    description: z.string().optional(),
-    deadline: z.date().optional()
-})
 
 type ContentSchema = z.infer<typeof contentSchema>
 
@@ -49,8 +33,8 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
         toast.promise(promise, {
             loading: "Creating content...",
             success: (res) => {
-                console.log(res.data)
                 setIsSubmitted(false);
+                window.history.back();
                 return "Content created successfully";
             },
             error: (err) => {
@@ -70,7 +54,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                     className="grid gap-5"
                 >
                     <div className="grid gap-2">
-                        <h1 className="text-2xl font-bold">Create Content for topic name</h1>
+                        <h1 className="text-2xl font-bold">Create Content for {topic.title}</h1>
                         <p className="text-balance text-muted-foreground">
                             Fill the form below to create a new content.
                         </p>
@@ -98,7 +82,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                             Back
                         </Button>
                         <Button type="submit" disabled={isSubmitted} className="w-fit">
-                            {isSubmitted ? "Logging in..." : "Create Content"}
+                            {isSubmitted ? "Creating..." : "Create Content"}
                         </Button>
                     </div>
                 </form>

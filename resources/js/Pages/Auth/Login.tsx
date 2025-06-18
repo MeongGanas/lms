@@ -15,11 +15,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { Label } from "@/Components/ui/label";
 import { FormInput, PasswordInputWithToggle } from "@/Components/MyComponent/FormInput";
-
-const loginSchema = z.object({
-    email: z.string().email("Email must be a valid email."),
-    password: z.string(),
-});
+import { loginSchema } from "@/lib/validation/schemas";
 
 type LoginSchema = z.infer<typeof loginSchema>;
 

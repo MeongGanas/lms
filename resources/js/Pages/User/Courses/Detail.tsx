@@ -1,6 +1,6 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Content, Course, PageProps, Topic, User } from "@/types";
-import { Head, Link } from "@inertiajs/react";
+import { Course, PageProps } from "@/types";
+import { Head } from "@inertiajs/react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import {
@@ -12,7 +12,6 @@ import {
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb"
 import CreateTopic from "@/Components/MyComponent/User/Course/Topics/TopicDialog";
-import { Button } from "@/Components/ui/button";
 import TopicCard from "@/Components/MyComponent/User/Course/Topics/TopicCard";
 
 export default function CourseDetail({
@@ -24,8 +23,6 @@ export default function CourseDetail({
     useEffect(() => {
         axios.post("/setRecentCourse", { course_id: course.id });
     }, [course]);
-
-    console.log(course);
 
     return (
         <UserLayout user={user}>
@@ -55,8 +52,7 @@ export default function CourseDetail({
                 course.topics.map((topic) => (
                     <TopicCard topic={topic} user={user} key={topic.id} />
                 ))
-            )
-            }
+            )}
         </UserLayout >
     );
 }

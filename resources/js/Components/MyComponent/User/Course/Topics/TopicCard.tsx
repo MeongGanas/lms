@@ -13,7 +13,7 @@ export default function TopicCard({ user, topic }: { user: User, topic: Topic })
                 </Button>
             )}
             {topic.contents.map((content) => (
-                <ContentCard content={content} key={content.id} />
+                <ContentCard content={content} key={content.id} role={user.role} />
             ))}
         </div>
     )
