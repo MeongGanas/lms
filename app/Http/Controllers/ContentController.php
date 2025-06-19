@@ -49,6 +49,22 @@ class ContentController extends Controller
         return response()->json(['content' => $content]);
     }
 
+    public function moveToTop(Content $content)
+    {
+        Content::where('order', $content->order - 1)->update(['order' => $content->order]);
+        $content->update(['order' => $content->order - 1]);
+
+        return response()->json(['message' => 'Content moved to top successfully']);
+    }
+
+    public function moveToBottom(Content $content)
+    {
+        Content::where('order', $content->order + 1)->update(['order' => $content->order]);
+        $content->update(['order' => $content->order + 1]);
+
+        return response()->json(['message' => 'Content moved to bottom successfully']);
+    }
+
     /**
      * Display the specified resource.
      */

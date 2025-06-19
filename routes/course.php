@@ -30,6 +30,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
     Route::post('/topics/contents/create', [ContentController::class, 'store']);
 
+    Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);
+    Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);
+
     // enrollment
     Route::get('/courses/{course}/enroll', [CourseController::class, 'enrollView']);
     Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll']);
