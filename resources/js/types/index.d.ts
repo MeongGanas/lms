@@ -61,6 +61,15 @@ export interface Content {
     description?: string;
     deadline?: string;
     order: number;
+    progresses: Progresses[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Progresses {
+    id: string;
+    content_id: string;
+    student_id: string;
     created_at: string;
     updated_at: string;
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Content;
 use App\Models\Course;
+use App\Models\Progresses;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -63,6 +64,16 @@ class ContentController extends Controller
         $content->update(['order' => $content->order + 1]);
 
         return response()->json(['message' => 'Content moved to bottom successfully']);
+    }
+
+    public function setProgressDone(Content $content, Request $request)
+    {
+        Progresses::create([
+            'student_id' => $request->user()->id,
+            'content_id' => $content->id
+        ]);
+
+        return response()->json(['message' => 'Content set to done successfully']);
     }
 
     /**

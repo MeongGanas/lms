@@ -2,21 +2,39 @@ import { getYoutubeId } from "@/lib/utils";
 import { Content } from "@/types";
 import { Link } from "@inertiajs/react";
 import ContentMenu from "@/Components/MyComponent/User/Course/Contents/ContentMenu";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function ContentCard({
     contents,
     setContents,
     content,
     role,
+    user_id,
     index
 }: {
     contents: Content[],
     setContents: (content: Content[]) => void;
     content: Content;
     role: string;
+    user_id: string;
     index: number
 }) {
     const videoId = getYoutubeId(content.external_url ? content.external_url : '');
+
+    const setProgressDone = () => {
+        const promise = axios.put(`/contents/${content.id}/set-progress-done`)
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: (res) => {
+                return res.data.message;
+            },
+            error: (err) => {
+                console.log(err);
+                return err?.response?.data?.message || "Something went wrong";
+            },
+        })
+    }
 
     return (
         <div className="flex gap-3 w-full bg-white">
@@ -49,7 +67,7 @@ export default function ContentCard({
                     )}
                 </div>
                 {role === 'student' && (
-                    <input type="radio" className="cursor-pointer" name={`content - ${content.id}`} id={content.id} />
+                    <input type="radio" checked={content.progresses.some((progress) => progress.student_id === user_id)} className="cursor-pointer" name={`content - ${content.id}`} id={content.id} onChange={setProgressDone} />
                 )}
             </div>
         </div >

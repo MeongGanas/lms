@@ -20,6 +20,10 @@ class Content extends Model
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+
+        static::addGlobalScope('withProgresses', function ($query) {
+            $query->with(['progresses']);
+        });
     }
 
     protected $keyType = 'string';
@@ -30,6 +34,11 @@ class Content extends Model
     public function topic()
     {
         return $this->belongsTo(Topic::class);
+    }
+
+    public function progresses()
+    {
+        return $this->hasMany(Progresses::class);
     }
 
     public function submissions()

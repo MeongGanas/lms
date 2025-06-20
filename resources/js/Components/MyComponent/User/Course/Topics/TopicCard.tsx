@@ -16,7 +16,7 @@ export default function TopicCard({ user, topic }: { user: User, topic: Topic })
                 </Button>
             )}
             {contents.map((content, i) => (
-                <ContentCard content={content} key={content.id} role={user.role} setContents={setContents} contents={contents} index={i} />
+                <ContentCard content={content} key={content.id} role={user.role} setContents={setContents} contents={contents} index={i} user_id={user.id} />
             ))}
         </div >
     )

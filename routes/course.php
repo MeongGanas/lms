@@ -33,6 +33,8 @@ Route::middleware("auth")->group(function () {
     Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);
     Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);
 
+    Route::put('/contents/{content}/set-progress-done', [ContentController::class, 'setProgressDone']);
+
     // enrollment
     Route::get('/courses/{course}/enroll', [CourseController::class, 'enrollView']);
     Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll']);

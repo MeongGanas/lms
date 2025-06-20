@@ -27,7 +27,7 @@ return new class extends Migration
         Schema::create('progresses', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->foreignUuid("content_id")->index()->constrained()->cascadeOnDelete();
-            $table->foreignUuid("user_id")->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
             $table->timestamps();
         });
     }
