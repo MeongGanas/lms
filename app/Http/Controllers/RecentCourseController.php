@@ -8,14 +8,63 @@ use Illuminate\Support\Facades\Auth;
 
 class RecentCourseController extends Controller
 {
-    public function getRecent()
+    public function getRecentTeacherCourses()
     {
-        $recentCourses = \App\Models\User::find(Auth::id())->recentCourses()->with('course')->get()->map(function ($recentCourse) {
-            return $recentCourse->course;
-        });
+        $teacher = \App\Models\User::find(Auth::id());
 
-        return response()->json(["courses" => $recentCourses]);
+        $recentCourses = $teacher->recentCourses()
+            ->with(['course', 'course.enrollments'])
+            ->get()
+            ->map(fn($rc) => $rc->course)
+            ->filter();
+
+        return response()->json(['courses' => $recentCourses]);
     }
+
+    public function getRecentStudentCourses()
+    {
+        $student = \App\Models\User::find(Auth::id());
+
+        $recentCourses = $student->recentCourses()
+            ->with([
+                'course.teacher',
+                'course.topics.contents' => function ($query) use ($student) {
+                    $query->with([
+                        'progresses' => fn($q) => $q->where('student_id', $student->id)
+                    ]);
+                }
+            ])
+            ->get()
+            ->map(function ($rc) use ($student) {
+                $course = $rc->course;
+
+                $allContents = $course->topics->flatMap->contents;
+                $total = $allContents->count();
+
+                $done = $allContents->filter(function ($content) use ($student) {
+                    return $content->progresses->where('student_id', $student->id)->isNotEmpty();
+                })->count();
+
+                $progressPercentage = $total > 0 ? round(($done / $total) * 100) : 0;
+
+                $course->progress_percentage = $progressPercentage;
+
+                return [
+                    'id' => $course->id,
+                    'teacher_id' => $course->teacher_id,
+                    'title' => $course->title,
+                    'image' => $course->image,
+                    'teacher' => [
+                        'firstname' => $course->teacher->firstname,
+                        'lastname' => $course->teacher->lastname,
+                    ],
+                    'progress_percentage' => $progressPercentage,
+                ];
+            });
+
+        return response()->json(['courses' => $recentCourses]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

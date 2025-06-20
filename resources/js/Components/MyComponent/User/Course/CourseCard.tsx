@@ -7,13 +7,12 @@ import {
     CardTitle,
 } from "@/Components/ui/card";
 import { Progress } from "@/Components/ui/progress";
-import { Course } from "@/types";
+import { Course, StudentCourse } from "@/types";
 import { Link } from "@inertiajs/react";
 import { JoinDialog } from "./CourseDialog";
 
-export function StudentCourseCard({ course }: { course: Course }) {
+export function StudentCourseCard({ course }: { course: StudentCourse }) {
     const teacherName = course.teacher.lastname ? `${course.teacher.firstname + course.teacher.lastname}` : course.teacher.firstname;
-    const progress = 0
 
     return (
         <Link href={`/courses/${course.id}`}>
@@ -32,8 +31,8 @@ export function StudentCourseCard({ course }: { course: Course }) {
                     </CardTitle>
                 </CardContent>
                 <CardFooter className="px-3 pt-1 block space-y-2">
-                    <Progress value={0} />
-                    <h4 className="text-sm text-gray-500">{progress}% complete</h4>
+                    <Progress value={course.progress_percentage} />
+                    <h4 className="text-sm text-gray-500">{course.progress_percentage}% complete</h4>
                 </CardFooter>
             </Card>
         </Link>

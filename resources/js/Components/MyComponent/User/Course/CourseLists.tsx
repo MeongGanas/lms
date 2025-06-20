@@ -1,4 +1,4 @@
-import { Course } from "@/types";
+import { Course, StudentCourse } from "@/types";
 import { StudentCourseCard, TeacherCourseCard } from "./CourseCard";
 import { Link } from "@inertiajs/react";
 
@@ -16,7 +16,7 @@ export function TeacherCourseLists({ data }: { data: Course[] }) {
     );
 }
 
-export function StudentCourseLists({ data }: { data: Course[] }) {
+export function StudentCourseLists({ data }: { data: StudentCourse[] }) {
     return (
         <>
             {data.length > 0 ? (

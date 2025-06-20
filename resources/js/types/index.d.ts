@@ -23,6 +23,19 @@ export interface Course {
     updated_at: string;
 }
 
+export interface StudentCourse {
+    id: string;
+    teacher_id: string;
+    title: string;
+    enrollment_key: string;
+    image?: string;
+    topics: Topic[];
+    teacher: User;
+    progress_percentage: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface RecentCourse {
     id: string;
     user_id: string;

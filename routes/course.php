@@ -12,9 +12,17 @@ Route::get('/', function () {
 })->name("home");
 
 Route::middleware("auth")->group(function () {
-    // course fetch
+    Route::prefix('student')->group(function () {
+        // course fetch
+        Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecentStudentCourses']);
+    });
+
+    Route::prefix('teacher')->group(function () {
+        // course fetch
+        Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecentTeacherCourses']);
+    });
+
     Route::get('/getAllCourses', [CourseController::class, 'getAll']);
-    Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecent']);
     Route::post('/setRecentCourse', [RecentCourseController::class, 'store']);
 
     Route::get('/courses', [CourseController::class, 'index'])->name("courses");

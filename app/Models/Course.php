@@ -19,10 +19,6 @@ class Course extends Model
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
-
-        static::addGlobalScope('withTeacherAndEnrollment', function ($query) {
-            $query->with(['teacher', 'enrollments']);
-        });
     }
 
     protected $keyType = 'string';
