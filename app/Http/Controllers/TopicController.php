@@ -10,6 +10,12 @@ class TopicController extends Controller
 {
     use AuthorizesRequests;
 
+    public function getTopics(string $course_id)
+    {
+        $topics = Topic::where('course_id', $course_id)->get();
+        return response()->json(['topics' => $topics]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -1,5 +1,5 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Course, PageProps } from "@/types";
+import { Course, PageProps, Topic } from "@/types";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
 import React, { useEffect } from "react";
@@ -13,12 +13,22 @@ import {
 } from "@/Components/ui/breadcrumb"
 import CreateTopic from "@/Components/MyComponent/User/Course/Topics/TopicDialog";
 import TopicCard from "@/Components/MyComponent/User/Course/Topics/TopicCard";
+import { useQuery } from "react-query";
+import { TopicSkeleton } from "@/Components/MyComponent/User/Course/CourseSkeleton";
 
 export default function CourseDetail({
     auth: { user },
     course,
 }: PageProps<{ course: Course }>) {
     const pathname = window.location.pathname.split('/').slice(1, -1);
+
+    const { data: topics, isLoading } = useQuery({
+        queryKey: [`${course.id}-topics`],
+        queryFn: async () => {
+            const response = await axios.get(`/courses/${course.id}/topics`);
+            return (await response.data.topics) as Topic[];
+        },
+    });
 
     useEffect(() => {
         axios.post("/setRecentCourse", { course_id: course.id });
@@ -48,10 +58,14 @@ export default function CourseDetail({
                 <CreateTopic course_id={course.id} />
             )}
 
-            {course.topics.length > 0 && (
-                course.topics.map((topic) => (
+            {topics && topics.length > 0 && !isLoading ? (
+                topics.map((topic) => (
                     <TopicCard topic={topic} user={user} key={topic.id} />
                 ))
+            ) : (
+                <div className="mt-5">
+                    <TopicSkeleton />
+                </div>
             )}
         </UserLayout >
     );

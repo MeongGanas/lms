@@ -32,10 +32,11 @@ Route::middleware("auth")->group(function () {
     Route::post('/courses/create', [CourseController::class, 'store']);
 
     // topics
+    Route::get('/courses/{course_id}/topics', [TopicController::class, 'getTopics']);
     Route::post('/course/topics/create ', [TopicController::class, 'store']);
 
     // contents
-    Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
+    Route::get('/courses/{course_id}/topics/{topic}/contents/create', [ContentController::class, 'create']);
     Route::post('/topics/contents/create', [ContentController::class, 'store']);
 
     Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);

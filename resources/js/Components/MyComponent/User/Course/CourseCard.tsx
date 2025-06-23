@@ -71,7 +71,7 @@ export function PublicCourseCard({ user_id, course }: { course: Course; user_id:
 
     return (
         <Card className="shadow-sm border-neutral-100 rounded-xl">
-            <Link href={`/courses/${course.id}`}>
+            <Link href={`/courses/${course.id}`} preserveState>
                 <CardHeader className="px-3 pb-2">
                     <img
                         src="/asset/course_placeholder.png"

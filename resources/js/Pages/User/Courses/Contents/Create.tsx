@@ -5,17 +5,19 @@ import UserLayout from "@/Layouts/UserLayout";
 import { contentSchema } from "@/lib/validation/schemas";
 import { PageProps, Topic } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useQueryClient } from "react-query";
 import { z } from "zod";
 
 type ContentSchema = z.infer<typeof contentSchema>
 
-export default function Create({ auth: { user }, topic }: PageProps<{ topic: Topic }>) {
+export default function Create({ auth: { user }, topic, course_id }: PageProps<{ topic: Topic, course_id: string }>) {
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const queryClient = useQueryClient();
 
     const form = useForm<ContentSchema>({
         resolver: zodResolver(contentSchema),
@@ -27,14 +29,14 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
     const { handleSubmit, control } = form;
 
     const submit = handleSubmit((values) => {
-        console.log(values)
         setIsSubmitted(true);
         const promise = axios.post(`/topics/contents/create`, { ...values, topic_id: topic.id });
         toast.promise(promise, {
             loading: "Creating content...",
-            success: (res) => {
+            success: () => {
                 setIsSubmitted(false);
-                window.history.back();
+                queryClient.invalidateQueries([`${course_id}-topics`]);
+                router.replace(`/courses/${course_id}`);
                 return "Content created successfully";
             },
             error: (err) => {

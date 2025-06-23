@@ -12,7 +12,7 @@ export default function TopicCard({ user, topic }: { user: User, topic: Topic })
             <h1 className="text-xl font-semibold">{topic.title}</h1>
             {user.role === "teacher" && (
                 <Button asChild className="w-full text-center bg-transparent border-black/10 border text-black hover:bg-black/10">
-                    <Link href={`/topics/${topic.id}/contents/create`}>Add Content</Link>
+                    <Link href={`/courses/${topic.course_id}/topics/${topic.id}/contents/create`}>Add Content</Link>
                 </Button>
             )}
             {contents.map((content, i) => (

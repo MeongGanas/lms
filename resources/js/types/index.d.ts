@@ -17,7 +17,6 @@ export interface Course {
     enrollment_key: string;
     image?: string;
     enrollments: Enrollment[];
-    topics: Topic[];
     teacher: User;
     created_at: string;
     updated_at: string;

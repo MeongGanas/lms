@@ -15,11 +15,11 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Course $course, Topic $topic)
+    public function create(string $course_id, Topic $topic)
     {
         return Inertia::render('User/Courses/Contents/Create', [
             'topic' => $topic,
-            'course' => $course
+            'course_id' => $course_id
         ]);
     }
 

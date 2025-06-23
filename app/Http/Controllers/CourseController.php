@@ -20,7 +20,7 @@ class CourseController extends Controller
 
     public function getAll()
     {
-        $courses = Course::all();
+        $courses = Course::with(['teacher', 'enrollments'])->get();
         return response()->json(["courses" => $courses]);
     }
 
@@ -57,7 +57,7 @@ class CourseController extends Controller
         }
 
         return Inertia::render("User/Courses/Detail", [
-            "course" => $course->load('topics')
+            "course" => $course->only("id", "title")
         ]);
     }
 
