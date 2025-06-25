@@ -26,6 +26,7 @@ export default function CourseDetail({
         queryKey: [`${course.id}-topics`],
         queryFn: async () => {
             const response = await axios.get(`/courses/${course.id}/topics`);
+            console.log(`${course.id}-topics`)
             return (await response.data.topics) as Topic[];
         },
     });

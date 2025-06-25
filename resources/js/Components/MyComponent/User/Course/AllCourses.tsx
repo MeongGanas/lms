@@ -2,6 +2,7 @@ import { Course } from "@/types";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { PublicCourseCard } from "./CourseCard";
+import { PublicCourseSkeleton } from "./CourseSkeleton";
 
 export function AllCourses({ user_id }: { user_id: string }) {
     const { data, isLoading } = useQuery({
@@ -22,7 +23,12 @@ export function AllCourses({ user_id }: { user_id: string }) {
                     ))}
                 </div>
             ) : (
-                <h1>No classes created yet </h1>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
+                </div>
             )}
         </>
     );

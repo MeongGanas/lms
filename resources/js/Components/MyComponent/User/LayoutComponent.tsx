@@ -98,7 +98,7 @@ export function UserDropdown({ user }: { user: User | null }) {
                         <DropdownMenuItem>Support</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild className="cursor-pointer">
-                            <Link href={route("logout")} method="post">
+                            <Link href={route("logout")} method="post" as="button" className="w-full">
                                 Logout
                             </Link>
                         </DropdownMenuItem>

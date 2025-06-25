@@ -1,5 +1,44 @@
 import { Skeleton } from "@/Components/ui/skeleton";
 
+export function RecentStudentCourseSkeleton() {
+    return (
+        <div className="shadow-sm border-neutral-100 rounded-xl p-3 space-y-4">
+            <Skeleton className="w-full h-24 rounded-xl" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-full max-w-[100px]" />
+                <Skeleton className="h-4 w-full max-w-[150px]" />
+                <Skeleton className="h-4 w-full" />
+            </div>
+            <Skeleton className="h-4 w-full max-w-[120px]" />
+        </div>
+    )
+}
+
+export function RecentTeacherCourseSkeleton() {
+    return (
+        <div className="shadow-sm border-neutral-100 rounded-xl p-3 space-y-4">
+            <Skeleton className="w-full h-24 rounded-xl" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-full max-w-[150px]" />
+                <Skeleton className="h-4 w-full max-w-[120px]" />
+            </div>
+        </div>
+    )
+}
+
+export function PublicCourseSkeleton() {
+    return (
+        <div className="shadow-sm border-neutral-100 rounded-xl p-3 space-y-4">
+            <Skeleton className="w-full h-24 rounded-xl" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-full max-w-[100px]" />
+                <Skeleton className="h-4 w-full max-w-[200px]" />
+            </div>
+            <Skeleton className="h-9 w-full rounded-md" />
+        </div>
+    )
+}
+
 export function TopicSkeleton() {
     return (
         <div className="flex flex-col space-y-7 w-full">
