@@ -7,6 +7,7 @@ import { ArrowDown, ArrowUp, EllipsisVertical, Pencil, Plus, Trash } from "lucid
 import { SyntheticEvent } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient } from "react-query";
+import { EditTopic } from "./TopicDialog";
 
 export default
     function TopicMenu({
@@ -48,12 +49,13 @@ export default
         });
     }
 
-    const deleteContent = (e: SyntheticEvent) => {
+    const deleteTopic = (e: SyntheticEvent) => {
         e.preventDefault();
-        const promise = axios.delete(`/topic/${topic.id}/delete`)
+        const promise = axios.delete(`/topics/${topic.id}/delete`)
         toast.promise(promise, {
             loading: "Deleting...",
             success: (res) => {
+                queryClient.invalidateQueries([`${topic.course_id}-topics`])
                 return res.data.message;
             },
             error: (err) => {
@@ -88,12 +90,10 @@ export default
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/topics/${topic.id}/edit`} className="flex items-center gap-2 cursor-pointer">
-                            <Pencil className="w-3 h-3" />Edit
-                        </Link>
+                        <EditTopic topic={topic} />
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <form onSubmit={deleteContent}>
+                        <form onSubmit={deleteTopic}>
                             <button type="submit" className="flex items-center gap-2 cursor-pointer w-full">
                                 <Trash className="w-3 h-3" />Delete
                             </button>

@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
             'role' => 'teacher',
             'email' => 'teacher@gmail.com',
         ]);
+        User::create([
+            'firstname' => 'Teacher 2',
+            'password' => '1234',
+            'role' => 'teacher',
+            'email' => 'teacher2@gmail.com',
+        ]);
 
         User::create([
             'firstname' => 'Student',

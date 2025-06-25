@@ -18,7 +18,7 @@ Route::middleware("auth")->group(function () {
     });
 
     Route::prefix('teacher')->group(function () {
-        // course fetch
+        // course fetch 
         Route::get('/getRecentCourses', [RecentCourseController::class, 'getRecentTeacherCourses']);
     });
 
@@ -34,6 +34,7 @@ Route::middleware("auth")->group(function () {
     // topics
     Route::get('/courses/{course_id}/topics', [TopicController::class, 'getTopics']);
     Route::post('/topic/create ', [TopicController::class, 'store']);
+    Route::put('/topics/{topic}/edit ', [TopicController::class, 'update']);
     Route::delete('/topics/{topic}/delete', [TopicController::class, 'destroy']);
 
     // contents

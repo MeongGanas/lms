@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -12,7 +13,7 @@ class TopicController extends Controller
 
     public function getTopics(string $course_id)
     {
-        $topics = Topic::where('course_id', $course_id)->get();
+        $topics = Topic::where('course_id', $course_id)->orderBy('order')->get();
         return response()->json(['topics' => $topics]);
     }
 
@@ -21,7 +22,9 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize("create", Topic::class);
+        $course = Course::find($request->course_id);
+
+        $this->authorize("create", $course);
 
         $validatedData = $request->validate([
             'title' => 'required|string|min:2|max:255',
@@ -41,7 +44,15 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        //
+        $this->authorize("update", $topic);
+
+        $validatedData = $request->validate([
+            'title' => 'required|string|min:2|max:255',
+        ]);
+
+        $topic->update($validatedData);
+
+        return response()->json(['message' => 'Topic updated successfully']);
     }
 
     /**
@@ -49,6 +60,8 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
+        $this->authorize("delete", $topic);
+
         $topic->delete();
 
         return response()->json(['message' => 'Topic deleted successfuly']);

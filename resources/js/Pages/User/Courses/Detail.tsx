@@ -11,10 +11,11 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb"
-import CreateTopic from "@/Components/MyComponent/User/Course/Topics/TopicDialog";
+import { CreateTopic } from "@/Components/MyComponent/User/Course/Topics/TopicDialog";
 import TopicCard from "@/Components/MyComponent/User/Course/Topics/TopicCard";
 import { useQuery } from "react-query";
 import { TopicSkeleton } from "@/Components/MyComponent/User/Course/CourseSkeleton";
+import CourseMenu from "@/Components/MyComponent/User/Course/CourseMenu";
 
 export default function CourseDetail({
     auth: { user },
@@ -53,11 +54,17 @@ export default function CourseDetail({
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <h1 className="font-bold text-3xl">{course.title}</h1>
 
-            {user.role === 'teacher' && (
-                <CreateTopic course_id={course.id} />
-            )}
+            <div className="flex justify-between items-center">
+                <h1 className="font-bold text-3xl">{course.title}</h1>
+                {user.role === 'teacher' && (
+                    <div className="flex items-center gap-2">
+                        <CreateTopic course_id={course.id} />
+                        <CourseMenu course={course} />
+                    </div>
+                )}
+            </div>
+
 
             {topics && topics.length > 0 && !isLoading ? (
                 topics.map((topic, i) => (

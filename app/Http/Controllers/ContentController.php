@@ -8,9 +8,12 @@ use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ContentController extends Controller
 {
+    use AuthorizesRequests;
+
     public function getContents(string $topic_id)
     {
         $contents = Content::where('topic_id', $topic_id)->orderBy('order')->get();
@@ -102,6 +105,7 @@ class ContentController extends Controller
      */
     public function destroy(Content $content)
     {
+        $this->authorize("delete", $content);
         $content->delete();
         return response()->json(['message' => 'Content deleted successfuly']);
     }
