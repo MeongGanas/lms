@@ -1,31 +1,30 @@
 import { Button } from "@/Components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu";
-import { Content } from "@/types";
+import { Content, Topic } from "@/types";
 import { Link } from "@inertiajs/react";
 import axios from "axios";
-import { ArrowDown, ArrowUp, EllipsisVertical, Pencil, Trash } from "lucide-react";
+import { ArrowDown, ArrowUp, EllipsisVertical, Pencil, Plus, Trash } from "lucide-react";
 import { SyntheticEvent } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient } from "react-query";
 
 export default
-    function ContentMenu({
-        max_content,
-        content,
+    function TopicMenu({
+        max_topic,
+        topic,
         index
     }: {
-        max_content: number;
-        content: Content;
+        max_topic: number;
+        topic: Topic;
         index: number
     }) {
     const queryClient = useQueryClient();
 
     const moveToTop = () => {
-        const promise = axios.put(`/contents/${content.id}/move-to-top`)
+        const promise = axios.put(`/topics/${topic.id}/move-to-top`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
-                queryClient.invalidateQueries([`${content.topic_id}-contents`])
                 return res.data.message;
             },
             error: (err) => {
@@ -36,11 +35,10 @@ export default
     }
 
     const moveToBottom = () => {
-        const promise = axios.put(`/contents/${content.id}/move-to-bottom`)
+        const promise = axios.put(`/topics/${topic.id}/move-to-bottom`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
-                queryClient.invalidateQueries([`${content.topic_id}-contents`])
                 return res.data.message;
             },
             error: (err) => {
@@ -52,11 +50,10 @@ export default
 
     const deleteContent = (e: SyntheticEvent) => {
         e.preventDefault();
-        const promise = axios.delete(`/contents/${content.id}/delete`)
+        const promise = axios.delete(`/topic/${topic.id}/delete`)
         toast.promise(promise, {
             loading: "Deleting...",
             success: (res) => {
-                queryClient.invalidateQueries([`${content.topic_id}-contents`])
                 return res.data.message;
             },
             error: (err) => {
@@ -80,13 +77,18 @@ export default
                             <ArrowUp className="w-3 h-3" />Move to top
                         </button>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild disabled={index + 1 === max_content}>
+                    <DropdownMenuItem asChild disabled={index + 1 === max_topic}>
                         <button onClick={moveToBottom} className="flex items-center gap-2 cursor-pointer w-full">
                             <ArrowDown className="w-3 h-3" />Move to bottom
                         </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/topics/${content.topic_id}/contents/${content.id}/edit`} className="flex items-center gap-2 cursor-pointer">
+                        <Link href={`/courses/${topic.course_id}/topics/${topic.id}/contents/create`} className="flex items-center gap-2 cursor-pointer">
+                            <Plus className="w-3 h-3" />Add Content
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href={`/topics/${topic.id}/edit`} className="flex items-center gap-2 cursor-pointer">
                             <Pencil className="w-3 h-3" />Edit
                         </Link>
                     </DropdownMenuItem>

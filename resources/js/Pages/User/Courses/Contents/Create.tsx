@@ -30,7 +30,7 @@ export default function Create({ auth: { user }, topic, course_id }: PageProps<{
 
     const submit = handleSubmit((values) => {
         setIsSubmitted(true);
-        const promise = axios.post(`/topics/contents/create`, { ...values, topic_id: topic.id });
+        const promise = axios.post(`/content/create`, { ...values, topic_id: topic.id });
         toast.promise(promise, {
             loading: "Creating content...",
             success: () => {

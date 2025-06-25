@@ -60,12 +60,14 @@ export default function CourseDetail({
             )}
 
             {topics && topics.length > 0 && !isLoading ? (
-                topics.map((topic) => (
-                    <TopicCard topic={topic} user={user} key={topic.id} />
+                topics.map((topic, i) => (
+                    <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
                 ))
             ) : (
-                <div className="mt-5">
-                    <TopicSkeleton />
+                <div className="mt-5 space-y-5">
+                    <TopicSkeleton role={user.role} />
+                    <TopicSkeleton role={user.role} />
+                    <TopicSkeleton role={user.role} />
                 </div>
             )}
         </UserLayout >

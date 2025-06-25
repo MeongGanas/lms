@@ -39,12 +39,16 @@ export function PublicCourseSkeleton() {
     )
 }
 
-export function TopicSkeleton() {
+export function TopicSkeleton({ role }: { role: string }) {
     return (
-        <div className="flex flex-col space-y-7 w-full">
+        <div className="flex flex-col space-y-3 w-full">
             <Skeleton className="h-4 w-full max-w-[250px]" />
-            <ContentSkeleton />
-            <ContentSkeleton />
+            {role === 'teacher' && (
+                <Skeleton className="h-9 w-full rounded-md" />
+            )}
+            <div className="space-y-2">
+                <ContentSkeleton />
+            </div>
         </div >
     )
 }

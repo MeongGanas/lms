@@ -20,10 +20,6 @@ class Topic extends Model
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
-
-        static::addGlobalScope('withContents', function ($query) {
-            $query->with(['contents']);
-        });
     }
 
     protected $keyType = 'string';

@@ -24,7 +24,7 @@ export default function CreateTopic({ course_id }: { course_id: string }) {
         e.preventDefault();
         setIsSubmitted(true);
         const data = { title, course_id };
-        const promise = axios.post(`/course/topics/create`, data);
+        const promise = axios.post(`/topic/create`, data);
         toast.promise(promise, {
             loading: "Create the course...",
             success: (res) => {

@@ -58,7 +58,6 @@ export interface Topic {
     course_id: string;
     title: string;
     order: number;
-    contents: Content[];
     created_at: string;
     updated_at: string;
 }

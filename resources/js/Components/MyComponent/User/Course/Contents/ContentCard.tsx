@@ -6,19 +6,17 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function ContentCard({
-    contents,
-    setContents,
     content,
     role,
     user_id,
-    index
+    index,
+    max_content
 }: {
-    contents: Content[],
-    setContents: (content: Content[]) => void;
     content: Content;
     role: string;
     user_id: string;
-    index: number
+    index: number,
+    max_content: number
 }) {
     const videoId = getYoutubeId(content.external_url ? content.external_url : '');
 
@@ -47,7 +45,7 @@ export default function ContentCard({
                             <p className="font-light text-justify pb-1">{content.description}</p>
                         </div>
                         {role === 'teacher' && (
-                            <ContentMenu content={content} setContents={setContents} contents={contents} index={index} />
+                            <ContentMenu content={content} index={index} max_content={max_content} />
                         )}
                     </div>
                     {content.external_url && (

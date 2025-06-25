@@ -33,11 +33,15 @@ Route::middleware("auth")->group(function () {
 
     // topics
     Route::get('/courses/{course_id}/topics', [TopicController::class, 'getTopics']);
-    Route::post('/course/topics/create ', [TopicController::class, 'store']);
+    Route::post('/topic/create ', [TopicController::class, 'store']);
+    Route::delete('/topics/{topic}/delete', [TopicController::class, 'destroy']);
 
     // contents
+    Route::get('/topics/{topic_id}/contents', [ContentController::class, 'getContents']);
     Route::get('/courses/{course_id}/topics/{topic}/contents/create', [ContentController::class, 'create']);
-    Route::post('/topics/contents/create', [ContentController::class, 'store']);
+    Route::post('/content/create', [ContentController::class, 'store']);
+    Route::delete('/contents/{content}/delete', [ContentController::class, 'destroy']);
+
 
     Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);
     Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);

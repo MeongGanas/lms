@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
-use App\Models\Course;
 use App\Models\Progresses;
 use App\Models\Topic;
 use Illuminate\Http\Request;
@@ -12,6 +11,12 @@ use Inertia\Inertia;
 
 class ContentController extends Controller
 {
+    public function getContents(string $topic_id)
+    {
+        $contents = Content::where('topic_id', $topic_id)->orderBy('order')->get();
+        return response()->json(['contents' => $contents]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -77,14 +82,6 @@ class ContentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Content $content)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Content $content)
@@ -105,6 +102,7 @@ class ContentController extends Controller
      */
     public function destroy(Content $content)
     {
-        //
+        $content->delete();
+        return response()->json(['message' => 'Content deleted successfuly']);
     }
 }
