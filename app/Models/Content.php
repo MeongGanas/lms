@@ -36,6 +36,11 @@ class Content extends Model
         return $this->belongsTo(Topic::class);
     }
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function progresses()
     {
         return $this->hasMany(Progresses::class);

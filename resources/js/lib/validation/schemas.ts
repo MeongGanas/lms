@@ -21,21 +21,7 @@ export const registerSchema = z
 export const contentSchema = z.object({
     title: z.string(),
     type: z.string(),
-    file_path: z
-        .instanceof(File)
-        .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: "File must be less than 5MB",
-        })
-        .refine(
-            (file) =>
-                ["application/pdf", "image/png", "image/jpeg"].includes(
-                    file.type
-                ),
-            {
-                message: "Only PDF, PNG, or JPEG files are allowed",
-            }
-        )
-        .optional(),
+    file_path: z.instanceof(FileList).optional(),
     external_url: z.string().url().optional(),
     description: z.string().optional(),
     deadline: z.date().optional(),

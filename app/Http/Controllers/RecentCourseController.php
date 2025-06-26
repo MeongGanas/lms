@@ -28,7 +28,7 @@ class RecentCourseController extends Controller
         $recentCourses = $student->recentCourses()
             ->with([
                 'course.teacher',
-                'course.topics.contents' => function ($query) use ($student) {
+                'course.contents' => function ($query) use ($student) {
                     $query->with([
                         'progresses' => fn($q) => $q->where('student_id', $student->id)
                     ]);

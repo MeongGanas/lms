@@ -19,9 +19,11 @@ export default function TopicCard({ user, topic, index, max_topic }: { user: Use
             <div className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold">{topic.title}</h1>
 
-                <TopicMenu topic={topic} index={index} max_topic={max_topic} />
+                {user.role === 'teacher' && (
+                    <TopicMenu topic={topic} index={index} max_topic={max_topic} />
+                )}
             </div>
-            {contents && !isLoading ? contents.map((content, i) => (
+            {!isLoading ? contents && contents.map((content, i) => (
                 <ContentCard content={content} key={content.id} role={user.role} index={i} user_id={user.id} max_content={contents.length} />
             )) : (
                 <div className="space-y-5">

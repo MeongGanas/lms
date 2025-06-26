@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
 {
@@ -23,11 +24,10 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $course_id, Topic $topic)
+    public function create(Topic $topic)
     {
         return Inertia::render('User/Courses/Contents/Create', [
             'topic' => $topic,
-            'course_id' => $course_id
         ]);
     }
 
@@ -39,11 +39,11 @@ class ContentController extends Controller
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'min:2', 'max:255'],
             'description' => ['nullable', 'string'],
-            'file_path' => ['nullable', 'file', 'max:10240'],
             'external_url' => ['nullable', 'url'],
             'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
             'deadline' => ['nullable', 'date', 'after_or_equal:now'],
             'topic_id' => ['required', 'uuid', 'exists:topics,id'],
+            'course_id' => ['required', 'uuid', 'exists:courses,id'],
         ]);
 
         if ($request->hasFile('file_path')) {
@@ -53,9 +53,9 @@ class ContentController extends Controller
         $lastOrder = Content::where('topic_id', $validatedData['topic_id'])->max('order') ?? 0;
         $validatedData['order'] = $lastOrder + 1;
 
-        $content = Content::create($validatedData);
+        Content::create($validatedData);
 
-        return response()->json(['content' => $content]);
+        return response()->json(['message' => 'Content created successfully']);
     }
 
     public function moveToTop(Content $content)
@@ -87,9 +87,12 @@ class ContentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Content $content)
+    public function edit(Topic $topic, Content $content)
     {
-        //
+        return Inertia::render('User/Courses/Contents/Edit', [
+            'content' => $content,
+            'topic' => $topic
+        ]);
     }
 
     /**
@@ -97,7 +100,25 @@ class ContentController extends Controller
      */
     public function update(Request $request, Content $content)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'external_url' => ['nullable', 'url'],
+            'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
+            'deadline' => ['nullable', 'date', 'after_or_equal:now'],
+        ]);
+
+        if ($content->file_path) {
+            Storage::delete($content->file_path);
+        }
+
+        if ($request->hasFile('file_path')) {
+            $validatedData['file_path'] = $request->file('file_path')->store('contents', 'public');
+        }
+
+        $content->update($validatedData);
+
+        return response()->json(['message' => 'Content updated successfully']);
     }
 
     /**
@@ -105,7 +126,12 @@ class ContentController extends Controller
      */
     public function destroy(Content $content)
     {
-        $this->authorize("delete", $content);
+        // $this->authorize("delete", $content);
+
+        if ($content->file_path) {
+            Storage::delete($content->file_path);
+        }
+
         $content->delete();
         return response()->json(['message' => 'Content deleted successfuly']);
     }

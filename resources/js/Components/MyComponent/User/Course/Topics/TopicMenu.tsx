@@ -85,7 +85,7 @@ export default
                         </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/courses/${topic.course_id}/topics/${topic.id}/contents/create`} className="flex items-center gap-2 cursor-pointer">
+                        <Link href={`/topics/${topic.id}/contents/create`} className="flex items-center gap-2 cursor-pointer">
                             <Plus className="w-3 h-3" />Add Content
                         </Link>
                     </DropdownMenuItem>

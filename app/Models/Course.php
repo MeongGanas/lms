@@ -45,4 +45,9 @@ class Course extends Model
     {
         return $this->hasMany(Topic::class)->orderBy('order');
     }
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

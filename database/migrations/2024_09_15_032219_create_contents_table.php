@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->foreignUuid("topic_id")->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid("course_id")->index()->constrained()->cascadeOnDelete();
             $table->string("title");
             $table->text("description")->nullable();
             $table->string("file_path")->nullable();

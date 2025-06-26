@@ -66,8 +66,8 @@ export default function CourseDetail({
             </div>
 
 
-            {topics && topics.length > 0 && !isLoading ? (
-                topics.map((topic, i) => (
+            {!isLoading ? (
+                topics && topics.length > 0 && topics.map((topic, i) => (
                     <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
                 ))
             ) : (

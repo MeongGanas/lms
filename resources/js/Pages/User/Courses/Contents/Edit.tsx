@@ -5,11 +5,10 @@ import { Input } from "@/Components/ui/input";
 import UserLayout from "@/Layouts/UserLayout";
 import { getYoutubeId } from "@/lib/utils";
 import { contentSchema } from "@/lib/validation/schemas";
-import { PageProps, Topic } from "@/types";
+import { Content, PageProps, Topic } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router } from "@inertiajs/react";
 import axios from "axios";
-import { get } from "lodash";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -18,14 +17,18 @@ import { z } from "zod";
 
 type ContentSchema = z.infer<typeof contentSchema>
 
-export default function Create({ auth: { user }, topic }: PageProps<{ topic: Topic }>) {
+export default function Edit({ auth: { user }, content, topic }: PageProps<{ content: Content; topic: Topic }>) {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const queryClient = useQueryClient();
 
     const form = useForm<ContentSchema>({
         resolver: zodResolver(contentSchema),
         defaultValues: {
-            title: "",
+            title: content.title,
+            external_url: content.external_url ? content.external_url : undefined,
+            description: content.description ? content.description : undefined,
+            deadline: content.deadline ? new Date(content.deadline) : undefined,
+            type: content.type,
         }
     });
 
@@ -38,8 +41,8 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
     const submit = handleSubmit((values) => {
         setIsSubmitted(true);
         const data = new FormData();
+        data.append('_method', 'PUT');
         data.append('topic_id', topic.id);
-        data.append('course_id', topic.course_id);
         data.append('title', values.title);
         data.append('type', values.type);
 
@@ -59,12 +62,14 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
             data.append('file_path', values.file_path[0]);
         }
 
-        const promise = axios.post(`/content/create`, data);
+        console.log(values.title)
+
+        const promise = axios.post(`/contents/${content.id}/edit`, data);
         toast.promise(promise, {
-            loading: "Creating content...",
+            loading: "Editing content...",
             success: (res) => {
                 setIsSubmitted(false);
-                queryClient.invalidateQueries([`${topic.id}-contents`]);
+                queryClient.invalidateQueries([`${content.topic_id}-contents`]);
                 router.replace(`/courses/${topic.course_id}`);
                 return res.data.message;
             },
@@ -77,7 +82,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
 
     return (
         <UserLayout user={user}>
-            <Head title={"Create Content"} />
+            <Head title={"Edit Content"} />
 
             <Form {...form}>
                 <form
@@ -85,9 +90,9 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                     className="grid gap-5"
                 >
                     <div className="grid gap-2">
-                        <h1 className="text-2xl font-bold">Create Content for {topic.title}</h1>
+                        <h1 className="text-2xl font-bold">Edit {content.title} content</h1>
                         <p className="text-balance text-muted-foreground">
-                            Fill the form below to create a new content.
+                            Fill the form below to edit the content.
                         </p>
                     </div>
 
@@ -144,7 +149,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                             Back
                         </Button>
                         <Button type="submit" disabled={isSubmitted} className="w-fit">
-                            {isSubmitted ? "Creating..." : "Create Content"}
+                            {isSubmitted ? "Updating..." : "Update Content"}
                         </Button>
                     </div>
                 </form>

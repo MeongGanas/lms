@@ -39,8 +39,11 @@ Route::middleware("auth")->group(function () {
 
     // contents
     Route::get('/topics/{topic_id}/contents', [ContentController::class, 'getContents']);
-    Route::get('/courses/{course_id}/topics/{topic}/contents/create', [ContentController::class, 'create']);
+    Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
     Route::post('/content/create', [ContentController::class, 'store']);
+
+    Route::get('/topics/{topic}/contents/{content}/edit', [ContentController::class, 'edit']);
+    Route::put('/contents/{content}/edit', [ContentController::class, 'update']);
     Route::delete('/contents/{content}/delete', [ContentController::class, 'destroy']);
 
 

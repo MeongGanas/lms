@@ -28,7 +28,6 @@ export default function ContentCard({
                 return res.data.message;
             },
             error: (err) => {
-                console.log(err);
                 return err?.response?.data?.message || "Something went wrong";
             },
         })
@@ -59,7 +58,24 @@ export default function ContentCard({
                                     className="rounded-xl aspect-video w-full"
                                 ></iframe>
                             ) : (
-                                <Link href={content.external_url} target="_blank" className="text-blue-500 underline">klik di sini</Link>
+                                <a href={content.external_url} target="_blank" className="text-blue-500 underline">Klik di sini</a>
+                            )}
+                        </>
+                    )}
+
+                    {content.file_path && (
+                        <>
+                            {content.file_path.endsWith('.pdf') && (
+                                <embed
+                                    src={`/storage/${content.file_path}`}
+                                    width="100%"
+                                    height="500px"
+                                    type="application/pdf"
+                                />
+                            )}
+
+                            {content.file_path.endsWith('.jpg') || content.file_path.endsWith('.jpeg') || content.file_path.endsWith('.png') && (
+                                <img src={`/storage/${content.file_path}`} alt="Preview" className="max-w-full h-auto rounded" />
                             )}
                         </>
                     )}
