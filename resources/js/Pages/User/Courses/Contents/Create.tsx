@@ -34,6 +34,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
     const fileRef = form.register("file_path");
 
     const externalUrl = form.watch('external_url');
+    const type = form.watch('type');
 
     const submit = handleSubmit((values) => {
         setIsSubmitted(true);
@@ -91,7 +92,22 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                         </p>
                     </div>
 
+
                     <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required />
+
+                    <div className="grid sm:grid-cols-2 gap-5">
+                        <div className={`${type === 'assignment' || type === 'quiz' ? 'col-span-1' : 'col-span-2'}`}>
+                            < SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
+                                { value: "assignment", label: "Assignment" },
+                                { value: "quiz", label: "Quiz" },
+                                { value: "material", label: "Material" },
+                            ]} />
+                        </div>
+
+                        {type === 'assignment' || type === 'quiz' && (
+                            <DateInput control={control} name="deadline" label="Deadline" />
+                        )}
+                    </div>
 
                     <FormField
                         control={control}
@@ -116,26 +132,20 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                         )}
                     />
 
-                    <FormInput control={control} name="external_url" label="Attachment Link" type="external_url" placeholder="Enter your attachment link like youtube etc" />
+                    <div className="space-y-5">
+                        <FormInput control={control} name="external_url" label="Attachment Link" type="external_url" placeholder="Enter your attachment link like youtube etc" />
 
-                    {externalUrl && (externalUrl.includes('youtu.be') || externalUrl.includes('youtube.com')) && (
-                        <iframe
-                            src={`https://www.youtube.com/embed/${getYoutubeId(externalUrl)}`}
-                            title="YouTube video"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="rounded-xl aspect-video w-full"
-                        ></iframe>
-                    )}
-
-                    <div className="grid sm:grid-cols-2 gap-5">
-                        <DateInput control={control} name="deadline" label="Deadline" />
-                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
-                            { value: "assignment", label: "Assignment" },
-                            { value: "quiz", label: "Quiz" },
-                            { value: "material", label: "Material" },
-                        ]} />
+                        {externalUrl && (externalUrl.includes('youtu.be') || externalUrl.includes('youtube.com')) && (
+                            <iframe
+                                src={`https://www.youtube.com/embed/${getYoutubeId(externalUrl)}`}
+                                title="YouTube video"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="rounded-xl aspect-video w-full max-w-screen-sm"
+                            ></iframe>
+                        )}
                     </div>
+
 
                     <FormTextarea control={control} name="description" label="Description" placeholder="Enter your content description" />
 
@@ -147,8 +157,9 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
                             {isSubmitted ? "Creating..." : "Create Content"}
                         </Button>
                     </div>
+
                 </form>
             </Form>
-        </UserLayout>
+        </UserLayout >
     )
 }

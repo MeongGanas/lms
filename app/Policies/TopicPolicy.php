@@ -28,9 +28,17 @@ class TopicPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Course $course): bool
+    public function create(User $user): bool
     {
-        return $user->role === "teacher" && $course->teacher_id === $user->id;
+        $course_id = request()->input('course_id');
+
+        if (!$course_id) {
+            return false;
+        }
+
+        return Course::where('id', $course_id)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**
@@ -38,7 +46,9 @@ class TopicPolicy
      */
     public function update(User $user, Topic $topic): bool
     {
-        return $user->role === "teacher" && $topic->course->teacher_id === $user->id;
+        return Course::where('id', $topic->course_id)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**
@@ -46,7 +56,9 @@ class TopicPolicy
      */
     public function delete(User $user, Topic $topic): bool
     {
-        return $user->role === "teacher" && $topic->course->teacher_id === $user->id;
+        return Course::where('id', $topic->course_id)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**

@@ -21,6 +21,22 @@ class ContentController extends Controller
         return response()->json(['contents' => $contents]);
     }
 
+    public function moveToTop(Content $content)
+    {
+        Content::where('order', $content->order - 1)->update(['order' => $content->order]);
+        $content->update(['order' => $content->order - 1]);
+
+        return response()->json(['message' => 'Content moved to top successfully']);
+    }
+
+    public function moveToBottom(Content $content)
+    {
+        Content::where('order', $content->order + 1)->update(['order' => $content->order]);
+        $content->update(['order' => $content->order + 1]);
+
+        return response()->json(['message' => 'Content moved to bottom successfully']);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -36,6 +52,8 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Content::class);
+
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'min:2', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -56,22 +74,6 @@ class ContentController extends Controller
         Content::create($validatedData);
 
         return response()->json(['message' => 'Content created successfully']);
-    }
-
-    public function moveToTop(Content $content)
-    {
-        Content::where('order', $content->order - 1)->update(['order' => $content->order]);
-        $content->update(['order' => $content->order - 1]);
-
-        return response()->json(['message' => 'Content moved to top successfully']);
-    }
-
-    public function moveToBottom(Content $content)
-    {
-        Content::where('order', $content->order + 1)->update(['order' => $content->order]);
-        $content->update(['order' => $content->order + 1]);
-
-        return response()->json(['message' => 'Content moved to bottom successfully']);
     }
 
     public function setProgressDone(Content $content, Request $request)
@@ -100,6 +102,8 @@ class ContentController extends Controller
      */
     public function update(Request $request, Content $content)
     {
+        $this->authorize('update', $content);
+
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'min:2', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -126,7 +130,7 @@ class ContentController extends Controller
      */
     public function destroy(Content $content)
     {
-        // $this->authorize("delete", $content);
+        $this->authorize("delete", $content);
 
         if ($content->file_path) {
             Storage::delete($content->file_path);

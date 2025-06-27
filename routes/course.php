@@ -37,6 +37,9 @@ Route::middleware("auth")->group(function () {
     Route::put('/topics/{topic}/edit ', [TopicController::class, 'update']);
     Route::delete('/topics/{topic}/delete', [TopicController::class, 'destroy']);
 
+    Route::put('/topics/{topic}/move-to-top', [TopicController::class, 'moveToTop']);
+    Route::put('/topics/{topic}/move-to-bottom', [TopicController::class, 'moveToBottom']);
+
     // contents
     Route::get('/topics/{topic_id}/contents', [ContentController::class, 'getContents']);
     Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);

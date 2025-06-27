@@ -17,14 +17,28 @@ class TopicController extends Controller
         return response()->json(['topics' => $topics]);
     }
 
+    public function moveToTop(Topic $topic)
+    {
+        Topic::where('order', $topic->order - 1)->update(['order' => $topic->order]);
+        $topic->update(['order' => $topic->order - 1]);
+
+        return response()->json(['message' => 'Topic moved to top successfully']);
+    }
+
+    public function moveToBottom(Topic $topic)
+    {
+        Topic::where('order', $topic->order + 1)->update(['order' => $topic->order]);
+        $topic->update(['order' => $topic->order + 1]);
+
+        return response()->json(['message' => 'Topic moved to bottom successfully']);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $course = Course::find($request->course_id);
-
-        $this->authorize("create", $course);
+        $this->authorize("create", Topic::class);
 
         $validatedData = $request->validate([
             'title' => 'required|string|min:2|max:255',

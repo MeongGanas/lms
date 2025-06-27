@@ -26,6 +26,7 @@ export default
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
+                queryClient.invalidateQueries([`${topic.course_id}-topics`])
                 return res.data.message;
             },
             error: (err) => {
@@ -40,6 +41,7 @@ export default
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
+                queryClient.invalidateQueries([`${topic.course_id}-topics`])
                 return res.data.message;
             },
             error: (err) => {

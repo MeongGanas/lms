@@ -37,6 +37,7 @@ export default function Edit({ auth: { user }, content, topic }: PageProps<{ con
     const fileRef = form.register("file_path");
 
     const externalUrl = form.watch('external_url');
+    const type = form.watch('type');
 
     const submit = handleSubmit((values) => {
         setIsSubmitted(true);
@@ -98,6 +99,20 @@ export default function Edit({ auth: { user }, content, topic }: PageProps<{ con
 
                     <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required />
 
+                    <div className="grid sm:grid-cols-2 gap-5">
+                        <div className={`${type === 'assignment' || type === 'quiz' ? 'col-span-1' : 'col-span-2'}`}>
+                            < SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
+                                { value: "assignment", label: "Assignment" },
+                                { value: "quiz", label: "Quiz" },
+                                { value: "material", label: "Material" },
+                            ]} />
+                        </div>
+
+                        {type === 'assignment' || type === 'quiz' && (
+                            <DateInput control={control} name="deadline" label="Deadline" />
+                        )}
+                    </div>
+
                     <FormField
                         control={control}
                         name="file_path"
@@ -132,15 +147,6 @@ export default function Edit({ auth: { user }, content, topic }: PageProps<{ con
                             className="rounded-xl aspect-video w-full"
                         ></iframe>
                     )}
-
-                    <div className="grid sm:grid-cols-2 gap-5">
-                        <DateInput control={control} name="deadline" label="Deadline" />
-                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
-                            { value: "assignment", label: "Assignment" },
-                            { value: "quiz", label: "Quiz" },
-                            { value: "material", label: "Material" },
-                        ]} />
-                    </div>
 
                     <FormTextarea control={control} name="description" label="Description" placeholder="Enter your content description" />
 

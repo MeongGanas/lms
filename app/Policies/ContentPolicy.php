@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Models\Content;
+use App\Models\Course;
+use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -29,7 +31,15 @@ class ContentPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        $courseId = request()->input('course_id');
+
+        if (! $courseId) {
+            return false;
+        }
+
+        return Course::where('id', $courseId)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**
@@ -37,7 +47,9 @@ class ContentPolicy
      */
     public function update(User $user, Content $content): bool
     {
-        return false;
+        return Course::where('id', $content->course_id)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**
@@ -45,7 +57,9 @@ class ContentPolicy
      */
     public function delete(User $user, Content $content): bool
     {
-        return false;
+        return Course::where('id', $content->course_id)
+            ->where('teacher_id', $user->id)
+            ->exists();
     }
 
     /**
