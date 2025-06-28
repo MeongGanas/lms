@@ -11,22 +11,26 @@ class TopicController extends Controller
 {
     use AuthorizesRequests;
 
-    public function getTopics(string $course_id)
+    public function getTopics(string $course)
     {
-        $topics = Topic::where('course_id', $course_id)->orderBy('order')->get();
+        $topics = Topic::where('course_id', $course)->orderBy('order')->get();
         return response()->json(['topics' => $topics]);
     }
 
-    public function moveToTop(Topic $topic)
+    public function moveToTop(Course $course, Topic $topic)
     {
+        $this->authorize('update', $course);
+
         Topic::where('order', $topic->order - 1)->update(['order' => $topic->order]);
         $topic->update(['order' => $topic->order - 1]);
 
         return response()->json(['message' => 'Topic moved to top successfully']);
     }
 
-    public function moveToBottom(Topic $topic)
+    public function moveToBottom(Course $course, Topic $topic)
     {
+        $this->authorize('update', $course);
+
         Topic::where('order', $topic->order + 1)->update(['order' => $topic->order]);
         $topic->update(['order' => $topic->order + 1]);
 
@@ -36,12 +40,12 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Course $course)
     {
-        $this->authorize("create", Topic::class);
+        $this->authorize("update", $course);
 
         $validatedData = $request->validate([
-            'title' => 'required|string|min:2|max:255',
+            'title' => 'required|string|min:2|max:255|unique:topics,title',
             'course_id' => 'required|uuid|exists:courses,id'
         ]);
 
@@ -56,12 +60,12 @@ class TopicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Topic $topic)
+    public function update(Request $request, Course $course, Topic $topic)
     {
-        $this->authorize("update", $topic);
+        $this->authorize("update", $course);
 
         $validatedData = $request->validate([
-            'title' => 'required|string|min:2|max:255',
+            'title' => 'required|string|min:2|max:255|unique:topics,title',
         ]);
 
         $topic->update($validatedData);
@@ -72,9 +76,9 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $topic)
+    public function destroy(Course $course, Topic $topic)
     {
-        $this->authorize("delete", $topic);
+        $this->authorize("delete", $course);
 
         $topic->delete();
 

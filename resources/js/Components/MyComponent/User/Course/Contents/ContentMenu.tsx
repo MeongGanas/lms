@@ -21,7 +21,7 @@ export default
     const queryClient = useQueryClient();
 
     const moveToTop = () => {
-        const promise = axios.put(`/contents/${content.id}/move-to-top`)
+        const promise = axios.put(`/courses/${content.course_id}/contents/${content.id}/move-to-top`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
@@ -36,7 +36,7 @@ export default
     }
 
     const moveToBottom = () => {
-        const promise = axios.put(`/contents/${content.id}/move-to-bottom`)
+        const promise = axios.put(`/courses/${content.course_id}/contents/${content.id}/move-to-bottom`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
@@ -52,7 +52,7 @@ export default
 
     const deleteContent = (e: SyntheticEvent) => {
         e.preventDefault();
-        const promise = axios.delete(`/contents/${content.id}/delete`)
+        const promise = axios.delete(`/courses/${content.course_id}/contents/${content.id}/delete`)
         toast.promise(promise, {
             loading: "Deleting...",
             success: (res) => {
@@ -86,7 +86,7 @@ export default
                         </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/topics/${content.topic_id}/contents/${content.id}/edit`} className="flex items-center gap-2 cursor-pointer">
+                        <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}/edit`} className="flex items-center gap-2 cursor-pointer">
                             <Pencil className="w-3 h-3" />Edit
                         </Link>
                     </DropdownMenuItem>

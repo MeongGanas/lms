@@ -65,6 +65,7 @@ export interface Topic {
 export interface Content {
     id: string;
     topic_id: string;
+    course_id: string;
     title: string;
     type: string;
     file_path?: string;

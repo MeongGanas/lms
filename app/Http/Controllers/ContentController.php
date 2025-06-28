@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
+use App\Models\Course;
 use App\Models\Progresses;
 use App\Models\Topic;
 use Illuminate\Http\Request;
@@ -15,33 +16,50 @@ class ContentController extends Controller
 {
     use AuthorizesRequests;
 
-    public function getContents(string $topic_id)
+    public function getContents(string $_, string $topic_id)
     {
         $contents = Content::where('topic_id', $topic_id)->orderBy('order')->get();
         return response()->json(['contents' => $contents]);
     }
 
-    public function moveToTop(Content $content)
+    public function moveToTop(Course $course, Content $content)
     {
+        $this->authorize('update', $course);
+
         Content::where('order', $content->order - 1)->update(['order' => $content->order]);
         $content->update(['order' => $content->order - 1]);
 
         return response()->json(['message' => 'Content moved to top successfully']);
     }
 
-    public function moveToBottom(Content $content)
+    public function moveToBottom(Course $course, Content $content)
     {
+        $this->authorize('update', $course);
+
         Content::where('order', $content->order + 1)->update(['order' => $content->order]);
         $content->update(['order' => $content->order + 1]);
 
         return response()->json(['message' => 'Content moved to bottom successfully']);
     }
 
+    public function setProgressDone(Content $content, Request $request)
+    {
+        Progresses::create([
+            'student_id' => $request->user()->id,
+            'content_id' => $content->id
+        ]);
+
+        return response()->json(['message' => 'Content set to done successfully']);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Topic $topic)
+    public function create(Course $course, Topic $topic)
     {
+        $this->authorize('update', $course);
+
         return Inertia::render('User/Courses/Contents/Create', [
             'topic' => $topic,
         ]);
@@ -50,9 +68,9 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Course $course)
     {
-        $this->authorize('create', Content::class);
+        $this->authorize('update', $course);
 
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'min:2', 'max:255'],
@@ -61,8 +79,9 @@ class ContentController extends Controller
             'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
             'deadline' => ['nullable', 'date', 'after_or_equal:now'],
             'topic_id' => ['required', 'uuid', 'exists:topics,id'],
-            'course_id' => ['required', 'uuid', 'exists:courses,id'],
         ]);
+
+        $validatedData['course_id'] = $course->id;
 
         if ($request->hasFile('file_path')) {
             $validatedData['file_path'] = $request->file('file_path')->store('contents');
@@ -76,21 +95,13 @@ class ContentController extends Controller
         return response()->json(['message' => 'Content created successfully']);
     }
 
-    public function setProgressDone(Content $content, Request $request)
-    {
-        Progresses::create([
-            'student_id' => $request->user()->id,
-            'content_id' => $content->id
-        ]);
-
-        return response()->json(['message' => 'Content set to done successfully']);
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Topic $topic, Content $content)
+    public function edit(Course $course, Topic $topic, Content $content)
     {
+        $this->authorize('update', $course);
+
         return Inertia::render('User/Courses/Contents/Edit', [
             'content' => $content,
             'topic' => $topic
@@ -100,9 +111,9 @@ class ContentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Content $content)
+    public function update(Request $request, Course $course, Content $content)
     {
-        $this->authorize('update', $content);
+        $this->authorize('update', $course);
 
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'min:2', 'max:255'],
@@ -128,9 +139,9 @@ class ContentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Content $content)
+    public function destroy(Course $course, Content $content)
     {
-        $this->authorize("delete", $content);
+        $this->authorize("delete", $course);
 
         if ($content->file_path) {
             Storage::delete($content->file_path);

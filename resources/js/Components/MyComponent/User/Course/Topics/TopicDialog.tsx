@@ -27,7 +27,7 @@ export function CreateTopic({ course_id }: { course_id: string }) {
         e.preventDefault();
         setIsSubmitted(true);
         const data = { title, course_id };
-        const promise = axios.post(`/topic/create`, data);
+        const promise = axios.post(`/courses/${course_id}/topic/create`, data);
         toast.promise(promise, {
             loading: "Creating...",
             success: (res) => {
@@ -93,7 +93,7 @@ export function EditTopic({ topic }: { topic: Topic }) {
         e.preventDefault();
         setIsSubmitted(true);
         const data = { title };
-        const promise = axios.put(`/topics/${topic.id}/edit`, data);
+        const promise = axios.put(`/courses/${topic.course_id}/topics/${topic.id}/edit`, data);
         toast.promise(promise, {
             loading: "Editing...",
             success: (res) => {

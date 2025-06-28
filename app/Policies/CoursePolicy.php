@@ -36,7 +36,7 @@ class CoursePolicy
      */
     public function update(User $user, Course $course): bool
     {
-        return false;
+        return $course->teacher_id === $user->id;
     }
 
     /**
@@ -44,7 +44,7 @@ class CoursePolicy
      */
     public function delete(User $user, Course $course): bool
     {
-        return false;
+        return $course->teacher_id === $user->id;
     }
 
     /**

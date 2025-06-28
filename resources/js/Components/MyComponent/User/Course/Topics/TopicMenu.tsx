@@ -22,7 +22,7 @@ export default
     const queryClient = useQueryClient();
 
     const moveToTop = () => {
-        const promise = axios.put(`/topics/${topic.id}/move-to-top`)
+        const promise = axios.put(`/courses/${topic.course_id}/topics/${topic.id}/move-to-top`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
@@ -37,7 +37,7 @@ export default
     }
 
     const moveToBottom = () => {
-        const promise = axios.put(`/topics/${topic.id}/move-to-bottom`)
+        const promise = axios.put(`/courses/${topic.course_id}/topics/${topic.id}/move-to-bottom`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
@@ -53,7 +53,7 @@ export default
 
     const deleteTopic = (e: SyntheticEvent) => {
         e.preventDefault();
-        const promise = axios.delete(`/topics/${topic.id}/delete`)
+        const promise = axios.delete(`/courses/${topic.course_id}/topics/${topic.id}/delete`)
         toast.promise(promise, {
             loading: "Deleting...",
             success: (res) => {
@@ -87,7 +87,7 @@ export default
                         </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/topics/${topic.id}/contents/create`} className="flex items-center gap-2 cursor-pointer">
+                        <Link href={`/courses/${topic.course_id}/topics/${topic.id}/contents/create`} className="flex items-center gap-2 cursor-pointer">
                             <Plus className="w-3 h-3" />Add Content
                         </Link>
                     </DropdownMenuItem>

@@ -9,7 +9,7 @@ export default function TopicCard({ user, topic, index, max_topic }: { user: Use
     const { data: contents, isLoading } = useQuery({
         queryKey: [`${topic.id}-contents`],
         queryFn: async () => {
-            const response = await axios.get(`/topics/${topic.id}/contents`);
+            const response = await axios.get(`/courses/${topic.course_id}/topics/${topic.id}/contents`);
             return (await response.data.contents) as Content[];
         },
     });

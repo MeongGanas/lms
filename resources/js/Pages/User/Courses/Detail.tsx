@@ -16,6 +16,7 @@ import TopicCard from "@/Components/MyComponent/User/Course/Topics/TopicCard";
 import { useQuery } from "react-query";
 import { TopicSkeleton } from "@/Components/MyComponent/User/Course/CourseSkeleton";
 import CourseMenu from "@/Components/MyComponent/User/Course/CourseMenu";
+import CourseLayout from "@/Layouts/CourseLayout";
 
 export default function CourseDetail({
     auth: { user },
@@ -39,44 +40,31 @@ export default function CourseDetail({
     return (
         <UserLayout user={user}>
             <Head title={course.title} />
-            <Breadcrumb>
-                <BreadcrumbList>
-                    {pathname.map((path, index) => (
-                        <React.Fragment key={index}>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href={`/${path}`} className="capitalize">{path}</BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                        </React.Fragment>
-                    ))}
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>{course.title}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
 
-            <div className="flex justify-between items-center">
-                <h1 className="font-bold text-3xl">{course.title}</h1>
-                {user.role === 'teacher' && (
-                    <div className="flex items-center gap-2">
-                        <CreateTopic course_id={course.id} />
-                        <CourseMenu course={course} />
+            <CourseLayout course_title={course.title}>
+                <div className="flex justify-between items-center">
+                    <h1 className="font-bold text-3xl">{course.title}</h1>
+                    {user.role === 'teacher' && (
+                        <div className="flex items-center gap-2">
+                            <CreateTopic course_id={course.id} />
+                            <CourseMenu course={course} />
+                        </div>
+                    )}
+                </div>
+
+
+                {!isLoading ? (
+                    topics && topics.length > 0 && topics.map((topic, i) => (
+                        <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
+                    ))
+                ) : (
+                    <div className="mt-5 space-y-5">
+                        <TopicSkeleton role={user.role} />
+                        <TopicSkeleton role={user.role} />
+                        <TopicSkeleton role={user.role} />
                     </div>
                 )}
-            </div>
-
-
-            {!isLoading ? (
-                topics && topics.length > 0 && topics.map((topic, i) => (
-                    <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
-                ))
-            ) : (
-                <div className="mt-5 space-y-5">
-                    <TopicSkeleton role={user.role} />
-                    <TopicSkeleton role={user.role} />
-                    <TopicSkeleton role={user.role} />
-                </div>
-            )}
+            </CourseLayout>
         </UserLayout >
     );
 }
