@@ -1,16 +1,8 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Course, PageProps, Topic } from "@/types";
+import { Breadcrumbs, Course, PageProps, Topic } from "@/types";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
-import React, { useEffect } from "react";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/Components/ui/breadcrumb"
+import { useEffect } from "react";
 import { CreateTopic } from "@/Components/MyComponent/User/Course/Topics/TopicDialog";
 import TopicCard from "@/Components/MyComponent/User/Course/Topics/TopicCard";
 import { useQuery } from "react-query";
@@ -21,9 +13,8 @@ import CourseLayout from "@/Layouts/CourseLayout";
 export default function CourseDetail({
     auth: { user },
     course,
-}: PageProps<{ course: Course }>) {
-    const pathname = window.location.pathname.split('/').slice(1, -1);
-
+    breadcrumbs
+}: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[] }>) {
     const { data: topics, isLoading } = useQuery({
         queryKey: [`${course.id}-topics`],
         queryFn: async () => {
@@ -41,7 +32,7 @@ export default function CourseDetail({
         <UserLayout user={user}>
             <Head title={course.title} />
 
-            <CourseLayout course_title={course.title}>
+            <CourseLayout breadcrumbs={breadcrumbs}>
                 <div className="flex justify-between items-center">
                     <h1 className="font-bold text-3xl">{course.title}</h1>
                     {user.role === 'teacher' && (

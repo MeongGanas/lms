@@ -56,8 +56,14 @@ class CourseController extends Controller
             return redirect('/courses/' . $course->id . '/enroll');
         }
 
+        $breadcrumbs = [
+            ['title' => 'Courses', 'url' => route('courses.index')],
+            ['title' => $course->title, 'url' => route('courses.show', $course)],
+        ];
+
         return Inertia::render("User/Courses/Detail", [
-            "course" => $course->only("id", "title")
+            "course" => $course->only("id", "title"),
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 

@@ -6,25 +6,25 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb"
+import { Breadcrumbs } from "@/types";
 import React, { ReactNode } from "react";
 
-export default function CourseLayout({ children, course_title }: { children: ReactNode, course_title: string }) {
-    const pathname = window.location.pathname.split('/').slice(1, -1);
-
+export default function CourseLayout({ children, breadcrumbs }: { children: ReactNode, breadcrumbs: Breadcrumbs[] }) {
     return (
         <>
             <Breadcrumb>
                 <BreadcrumbList>
-                    {pathname.map((path, index) => (
+                    {breadcrumbs.slice(0, -1).map((breadcrumb, index) => (
                         <React.Fragment key={index}>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`/${path}`} className="capitalize">{path}</BreadcrumbLink>
+                                <BreadcrumbLink href={`${breadcrumb.url}`} className="capitalize">{breadcrumb.title}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                         </React.Fragment>
                     ))}
                     <BreadcrumbItem>
-                        <BreadcrumbPage>{course_title}</BreadcrumbPage>
+                        <BreadcrumbPage>{breadcrumbs[breadcrumbs.length - 1].title}</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>

@@ -25,8 +25,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/getAllCourses', [CourseController::class, 'getAll']);
     Route::post('/setRecentCourse', [RecentCourseController::class, 'store']);
 
-    Route::get('/courses', [CourseController::class, 'index'])->name("courses");
-    Route::get('/courses/{course}', [CourseController::class, 'show']);
+    Route::get('/courses', [CourseController::class, 'index'])->name("courses.index");
+    Route::get('/courses/{course}', [CourseController::class, 'show'])->name("courses.show");
 
     // teacher actions
     Route::post('/courses/create', [CourseController::class, 'store']);

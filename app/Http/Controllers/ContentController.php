@@ -60,8 +60,18 @@ class ContentController extends Controller
     {
         $this->authorize('update', $course);
 
+        $breadcrumbs = [
+            ['title' => 'Courses', 'url' => route('courses.index')],
+            ['title' => $course->title, 'url' => route('courses.show', $course)],
+            ['title' => 'Topics', 'url' => route('courses.show', $course)],
+            ['title' => $topic->title, 'url' => '#'],
+            ['title' => 'Contents', 'url' => '#'],
+            ['title' => 'Create', 'url' => '#'],
+        ];
+
         return Inertia::render('User/Courses/Contents/Create', [
             'topic' => $topic,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -102,9 +112,20 @@ class ContentController extends Controller
     {
         $this->authorize('update', $course);
 
+        $breadcrumbs = [
+            ['title' => 'Courses', 'url' => route('courses.index')],
+            ['title' => $course->title, 'url' => route('courses.show', $course)],
+            ['title' => 'Topics', 'url' => route('courses.show', $course)],
+            ['title' => $topic->title, 'url' => '#'],
+            ['title' => 'Contents', 'url' => '#'],
+            ['title' => $content->title, 'url' => '#'],
+            ['title' => 'Edit', 'url' => '#'],
+        ];
+
         return Inertia::render('User/Courses/Contents/Edit', [
             'content' => $content,
-            'topic' => $topic
+            'topic' => $topic,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 

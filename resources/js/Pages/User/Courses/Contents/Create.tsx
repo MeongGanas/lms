@@ -6,11 +6,10 @@ import CourseLayout from "@/Layouts/CourseLayout";
 import UserLayout from "@/Layouts/UserLayout";
 import { getYoutubeId } from "@/lib/utils";
 import { contentSchema } from "@/lib/validation/schemas";
-import { PageProps, Topic } from "@/types";
+import { Breadcrumbs, PageProps, Topic } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router } from "@inertiajs/react";
 import axios from "axios";
-import { get } from "lodash";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,7 +18,7 @@ import { z } from "zod";
 
 type ContentSchema = z.infer<typeof contentSchema>
 
-export default function Create({ auth: { user }, topic }: PageProps<{ topic: Topic }>) {
+export default function Create({ auth: { user }, topic, breadcrumbs }: PageProps<{ topic: Topic; breadcrumbs: Breadcrumbs[] }>) {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const queryClient = useQueryClient();
 
@@ -80,7 +79,7 @@ export default function Create({ auth: { user }, topic }: PageProps<{ topic: Top
         <UserLayout user={user}>
             <Head title={"Create Content"} />
 
-            <CourseLayout course_title={"Create"}>
+            <CourseLayout breadcrumbs={breadcrumbs}>
                 <Form {...form}>
                     <form
                         onSubmit={submit}

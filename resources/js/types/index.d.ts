@@ -93,3 +93,8 @@ export type PageProps<
         user: User;
     };
 };
+
+export interface Breadcrumbs {
+    title: string;
+    url: string;
+}
