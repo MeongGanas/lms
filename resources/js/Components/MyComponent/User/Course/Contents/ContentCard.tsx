@@ -1,6 +1,5 @@
 import { getYoutubeId } from "@/lib/utils";
 import { Content } from "@/types";
-import { Link } from "@inertiajs/react";
 import ContentMenu from "@/Components/MyComponent/User/Course/Contents/ContentMenu";
 import axios from "axios";
 import toast from "react-hot-toast";

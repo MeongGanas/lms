@@ -64,8 +64,6 @@ export default function Edit({ auth: { user }, content, topic, breadcrumbs }: Pa
             data.append('file_path', values.file_path[0]);
         }
 
-        console.log(values.title)
-
         const promise = axios.post(`/courses/${content.course_id}/contents/${content.id}/edit`, data);
         toast.promise(promise, {
             loading: "Editing content...",
