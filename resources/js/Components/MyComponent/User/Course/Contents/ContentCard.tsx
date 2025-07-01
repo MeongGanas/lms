@@ -4,6 +4,8 @@ import ContentMenu from "@/Components/MyComponent/User/Course/Contents/ContentMe
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useQueryClient } from "react-query";
+import { Link } from "@inertiajs/react";
+import { format } from "date-fns";
 
 export default function ContentCard({
     content,
@@ -43,7 +45,18 @@ export default function ContentCard({
                 <div className="w-full rounded-xl space-y-2" key={content.id}>
                     <div className="flex items-center justify-between gap-5">
                         <div className="space-y-2">
-                            <h1 className="text-lg">{content.title}</h1>
+                            {content.type === 'material' ? (
+                                <h1 className="text-lg">{content.title}</h1>
+                            ) : (
+                                <>
+                                    <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}/submissions`} className="text-lg underline">{content.title}</Link>
+                                    {content.deadline ? (
+                                        <p className="font-light text-justify pb-1 text-sm">Deadline: {format(content.deadline, 'HH:mm, dd MMMM yyyy')}</p>
+                                    ) : (
+                                        <p className="font-light text-justify pb-1 text-sm">No deadline.</p>
+                                    )}
+                                </>
+                            )}
                             <p className="font-light text-justify pb-1">{content.description}</p>
                         </div>
                         {role === 'teacher' && (

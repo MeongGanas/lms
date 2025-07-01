@@ -48,8 +48,8 @@ export default function Edit({ auth: { user }, content, topic, breadcrumbs }: Pa
         data.append('title', values.title);
         data.append('type', values.type);
 
-        if (values.external_url) {
-            data.append('external_url', values.external_url);
+        if (values.external_url || content.external_url) {
+            data.append('external_url', values.external_url ?? '');
         }
 
         if (values.description) {
@@ -57,7 +57,8 @@ export default function Edit({ auth: { user }, content, topic, breadcrumbs }: Pa
         }
 
         if (values.deadline) {
-            data.append('deadline', values.deadline.toString());
+            data.append('deadline', values.deadline.toISOString());
+            // console.log(values.deadline.toISOString())
         }
 
         if (values.file_path && values.file_path.length > 0) {
@@ -99,19 +100,15 @@ export default function Edit({ auth: { user }, content, topic, breadcrumbs }: Pa
 
                         <FormInput control={control} name="title" label="Title" type="title" placeholder="Enter your content title" required />
 
-                        <div className="grid sm:grid-cols-2 gap-5">
-                            <div className={`${type === 'assignment' || type === 'quiz' ? 'col-span-1' : 'col-span-2'}`}>
-                                < SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
-                                    { value: "assignment", label: "Assignment" },
-                                    { value: "quiz", label: "Quiz" },
-                                    { value: "material", label: "Material" },
-                                ]} />
-                            </div>
+                        <SelectInput control={control} name="type" label="Type" placeholder="Select type" required={true} selectItems={[
+                            { value: "assignment", label: "Assignment" },
+                            { value: "quiz", label: "Quiz" },
+                            { value: "material", label: "Material" },
+                        ]} />
 
-                            {type === 'assignment' || type === 'quiz' && (
-                                <DateInput control={control} name="deadline" label="Deadline" />
-                            )}
-                        </div>
+                        {(type === 'assignment' || type === 'quiz') && (
+                            <DateInput control={control} name="deadline" label="Deadline" />
+                        )}
 
                         <FormField
                             control={control}

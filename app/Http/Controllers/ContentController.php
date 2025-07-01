@@ -143,7 +143,7 @@ class ContentController extends Controller
             'description' => ['nullable', 'string'],
             'external_url' => ['nullable', 'url'],
             'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
-            'deadline' => ['nullable', 'date', 'after_or_equal:now'],
+            'deadline' => ['nullable', 'date'],
         ]);
 
         if ($content->file_path) {

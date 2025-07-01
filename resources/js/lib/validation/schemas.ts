@@ -22,7 +22,7 @@ export const contentSchema = z.object({
     title: z.string(),
     type: z.string(),
     file_path: z.instanceof(FileList).optional(),
-    external_url: z.string().url().optional(),
+    external_url: z.string().url().optional().or(z.literal("")),
     description: z.string().optional(),
     deadline: z.date().optional(),
 });
