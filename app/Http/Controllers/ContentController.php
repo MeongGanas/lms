@@ -42,8 +42,10 @@ class ContentController extends Controller
         return response()->json(['message' => 'Content moved to bottom successfully']);
     }
 
-    public function setProgressDone(Content $content, Request $request)
+    public function setProgressDone(Course $course, Content $content, Request $request)
     {
+        $this->authorize('view', $course);
+
         Progresses::create([
             'student_id' => $request->user()->id,
             'content_id' => $content->id
@@ -87,7 +89,7 @@ class ContentController extends Controller
             'description' => ['nullable', 'string'],
             'external_url' => ['nullable', 'url'],
             'type' => ['required', Rule::in(['material', 'assignment', 'quiz'])],
-            'deadline' => ['nullable', 'date', 'after_or_equal:now'],
+            'deadline' => ['nullable', 'date'],
             'topic_id' => ['required', 'uuid', 'exists:topics,id'],
         ]);
 

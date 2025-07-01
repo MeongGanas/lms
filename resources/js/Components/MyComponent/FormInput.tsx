@@ -1,7 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/Components/ui/form";
 import { Input } from "@/Components/ui/input";
 import { CalendarIcon, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/Components/ui/button";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/Components/ui/popover
 import { Calendar } from "@/Components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { Textarea } from "@/Components/ui/textarea";
+import { Label } from "../ui/label";
 
 export function FormInput({ control, name, label, type = "text", placeholder, required = false }: {
     control: any;
@@ -88,47 +89,103 @@ export function DateInput({ control, name, label, required = false }: {
         <FormField
             control={control}
             name={name}
-            render={({ field }) => (
-                <FormItem>
-                    <FormLabel>
-                        <span className="mr-1">{label}</span>
-                        {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
-                    </FormLabel>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                        "w-full pl-3 text-left font-normal",
-                                        !field.value && "text-muted-foreground"
-                                    )}
-                                >
-                                    {field.value ? (
-                                        format(field.value, "PPP")
-                                    ) : (
-                                        <span>Pick a date</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                            </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                required={required}
-                                disabled={(date) =>
-                                    date > new Date() || date < new Date("1900-01-01")
-                                }
-                                captionLayout="dropdown"
-                            />
-                        </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                </FormItem>
-            )}
+            render={({ field }) => {
+                const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                    const timeValue = e.target.value;
+                    const date = field.value || new Date();
+
+                    const [hoursStr, minutesStr, secondsStr] = timeValue.split(':');
+
+                    const newDate = new Date(date);
+
+                    const hours = parseInt(hoursStr, 10) || 0;
+                    const minutes = parseInt(minutesStr, 10) || 0;
+                    const seconds = parseInt(secondsStr, 10) || 0;
+
+                    if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
+                        newDate.setHours(hours);
+                        newDate.setMinutes(minutes);
+                        newDate.setSeconds(seconds);
+
+                        field.onChange(newDate);
+                    }
+                };
+
+                const formatTime = (date: Date) => {
+                    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+                        return "";
+                    }
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    const seconds = String(date.getSeconds()).padStart(2, '0');
+                    return `${hours}:${minutes}:${seconds}`;
+                }
+
+                const timeInputRef = useRef<HTMLInputElement>(null);
+                const handleInputClick = () => {
+                    timeInputRef.current?.showPicker();
+                };
+                return (
+                    <FormItem>
+                        <div className="grid grid-cols-2 items-center gap-5">
+                            <div className="space-y-2 flex flex-col">
+                                <FormLabel>
+                                    <span className="mr-1">{label}</span>
+                                    {required ? <span className="text-red-500">*</span> : <span className="text-gray-500/90 text-sm">( optional )</span>}
+                                </FormLabel>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "pl-3 text-left font-normal w-full",
+                                                    !field.value && "text-muted-foreground"
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    format(field.value, "PPP")
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={field.onChange}
+                                            required={required}
+                                            disabled={(date) =>
+                                                date > new Date() || date < new Date("1900-01-01")
+                                            }
+                                            captionLayout="dropdown"
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor={`time-picker-${name}`} className="px-1">
+                                    Time
+                                </Label>
+                                <Input
+                                    type="time"
+                                    ref={timeInputRef}
+                                    onClick={handleInputClick}
+                                    id={`time-picker-${name}`}
+                                    step="1"
+                                    value={field.value ? formatTime(field.value) : ""}
+                                    onChange={handleTimeChange}
+                                    className="bg-background relative appearance-none [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-2"
+                                />
+                            </div>
+                        </div>
+                        <FormMessage />
+                    </FormItem>
+                )
+            }}
         />
     );
 }

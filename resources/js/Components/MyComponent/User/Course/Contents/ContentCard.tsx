@@ -3,6 +3,7 @@ import { Content } from "@/types";
 import ContentMenu from "@/Components/MyComponent/User/Course/Contents/ContentMenu";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useQueryClient } from "react-query";
 
 export default function ContentCard({
     content,
@@ -19,11 +20,14 @@ export default function ContentCard({
 }) {
     const videoId = getYoutubeId(content.external_url ? content.external_url : '');
 
+    const queryClient = useQueryClient();
+
     const setProgressDone = () => {
-        const promise = axios.put(`/contents/${content.id}/set-progress-done`)
+        const promise = axios.put(`/courses/${content.course_id}/contents/${content.id}/set-progress-done`)
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
+                queryClient.invalidateQueries([`${content.topic_id}-contents`])
                 return res.data.message;
             },
             error: (err) => {
@@ -80,7 +84,7 @@ export default function ContentCard({
                     )}
                 </div>
                 {role === 'student' && (
-                    <input type="radio" checked={content.progresses.some((progress) => progress.student_id === user_id)} className="cursor-pointer" name={`content - ${content.id}`} id={content.id} onChange={setProgressDone} />
+                    <input type="radio" checked={content.progresses.some((progress) => progress.student_id === user_id)} className="cursor-pointer checked:bg-black" name={`content - ${content.id}`} id={content.id} onChange={setProgressDone} />
                 )}
             </div>
         </div >
