@@ -45,11 +45,9 @@ export default function ContentCard({
                 <div className="w-full rounded-xl space-y-2" key={content.id}>
                     <div className="flex items-center justify-between gap-5">
                         <div className="space-y-2">
-                            {content.type === 'material' ? (
-                                <h1 className="text-lg">{content.title}</h1>
-                            ) : (
+                            <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}`} className="text-lg underline">{content.title}</Link>
+                            {content.type !== 'material' && (
                                 <>
-                                    <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}/submissions`} className="text-lg underline">{content.title}</Link>
                                     {content.deadline ? (
                                         <p className="font-light text-justify pb-1 text-sm">Deadline: {format(content.deadline, 'HH:mm, dd MMMM yyyy')}</p>
                                     ) : (
@@ -78,7 +76,6 @@ export default function ContentCard({
                             )}
                         </>
                     )}
-
                     {content.file_path && (
                         <>
                             {content.file_path.endsWith('.pdf') && (

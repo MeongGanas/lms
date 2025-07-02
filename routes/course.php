@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RecentCourseController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -50,12 +51,16 @@ Route::middleware("auth")->group(function () {
         Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
         Route::post('/content/create', [ContentController::class, 'store']);
 
+        Route::get('/topics/{topic}/contents/{content}', [ContentController::class, 'show']);
+
         Route::get('/topics/{topic}/contents/{content}/edit', [ContentController::class, 'edit']);
         Route::put('/contents/{content}/edit', [ContentController::class, 'update']);
         Route::delete('/contents/{content}/delete', [ContentController::class, 'destroy']);
 
         Route::put('/contents/{content}/set-progress-done', [ContentController::class, 'setProgressDone']);
         Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);
+
+        Route::get('/topics/{topic}/contents/{content}/submissions', [SubmissionController::class, 'getSubmissions']);
     });
 
     // contents

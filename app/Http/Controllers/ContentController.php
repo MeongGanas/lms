@@ -54,6 +54,25 @@ class ContentController extends Controller
         return response()->json(['message' => 'Content set to done successfully']);
     }
 
+    public function show(Course $course, Topic $topic, Content $content)
+    {
+        $this->authorize('view', $course);
+
+        $breadcrumbs = [
+            ['title' => 'Courses', 'url' => route('courses.index')],
+            ['title' => $course->title, 'url' => route('courses.show', $course)],
+            ['title' => 'Topics', 'url' => route('courses.show', $course)],
+            ['title' => $topic->title, 'url' => '#'],
+            ['title' => 'Contents', 'url' => '#'],
+            ['title' => $content->title, 'url' => '#'],
+        ];
+
+        return Inertia::render('User/Courses/Contents/Detail', [
+            'content' => $content,
+            'breadcrumbs' => $breadcrumbs
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
