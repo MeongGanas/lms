@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 import { TopicSkeleton } from "@/Components/MyComponent/User/Course/CourseSkeleton";
 import CourseMenu from "@/Components/MyComponent/User/Course/CourseMenu";
 import CourseLayout from "@/Layouts/CourseLayout";
+import ParticipantDialog from "@/Components/MyComponent/User/Course/ParticipantDialog";
 
 export default function CourseDetail({
     auth: { user },
@@ -33,28 +34,30 @@ export default function CourseDetail({
             <Head title={course.title} />
 
             <CourseLayout breadcrumbs={breadcrumbs}>
-                <div className="flex justify-between items-center">
-                    <h1 className="font-bold text-3xl">{course.title}</h1>
-                    {user.role === 'teacher' && (
-                        <div className="flex items-center gap-2">
-                            <CreateTopic course_id={course.id} />
-                            <CourseMenu course={course} />
+                <div className="space-y-5 col-span-3">
+                    <div className="flex justify-between items-center">
+                        <h1 className="font-bold text-3xl">{course.title}</h1>
+                        {user.role === 'teacher' && (
+                            <div className="flex items-center gap-2">
+                                <ParticipantDialog />
+                                <CreateTopic course_id={course.id} />
+                                <CourseMenu course={course} />
+                            </div>
+                        )}
+                    </div>
+
+                    {!isLoading ? (
+                        topics && topics.length > 0 && topics.map((topic, i) => (
+                            <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
+                        ))
+                    ) : (
+                        <div className="mt-5 space-y-5">
+                            <TopicSkeleton role={user.role} />
+                            <TopicSkeleton role={user.role} />
+                            <TopicSkeleton role={user.role} />
                         </div>
                     )}
                 </div>
-
-
-                {!isLoading ? (
-                    topics && topics.length > 0 && topics.map((topic, i) => (
-                        <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
-                    ))
-                ) : (
-                    <div className="mt-5 space-y-5">
-                        <TopicSkeleton role={user.role} />
-                        <TopicSkeleton role={user.role} />
-                        <TopicSkeleton role={user.role} />
-                    </div>
-                )}
             </CourseLayout>
         </UserLayout >
     );

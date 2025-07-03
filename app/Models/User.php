@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(RecentCourse::class)->orderBy('updated_at', 'desc');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

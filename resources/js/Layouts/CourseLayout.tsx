@@ -11,7 +11,7 @@ import React, { ReactNode } from "react";
 
 export default function CourseLayout({ children, breadcrumbs }: { children: ReactNode, breadcrumbs: Breadcrumbs[] }) {
     return (
-        <>
+        <div className="space-y-5">
             <Breadcrumb>
                 <BreadcrumbList>
                     {breadcrumbs.slice(0, -1).map((breadcrumb, index) => (
@@ -28,8 +28,7 @@ export default function CourseLayout({ children, breadcrumbs }: { children: Reac
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-
             {children}
-        </>
+        </div>
     )
 }

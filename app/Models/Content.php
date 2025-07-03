@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -26,11 +25,6 @@ class Content extends Model
             $query->with(['progresses']);
         });
     }
-
-    // public function setDeadlineAttribute($value)
-    // {
-    //     $this->attributes['deadline'] = $value ? Carbon::parse($value)->toDateTimeString() : null;
-    // }
 
     protected $casts = [
         'deadline' => 'datetime',
@@ -59,5 +53,10 @@ class Content extends Model
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
