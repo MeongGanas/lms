@@ -62,10 +62,14 @@ class CourseController extends Controller
         ];
 
         return Inertia::render("User/Courses/Detail", [
-            "course" => $course->only("id", "title"),
+            "course" => $course->only("id", "title", "teacher_id"),
             'breadcrumbs' => $breadcrumbs,
-            'participants' => $course->enrollments()->with('student')->get()
         ]);
+    }
+
+    public function getEnrollments(Course $course)
+    {
+        return response()->json(['participants' => $course->enrollments()->with('student')->get()]);
     }
 
     public function enrollView(Course $course)
@@ -93,6 +97,8 @@ class CourseController extends Controller
 
     public function kickParticipant(Course $course, Enrollment $enrollment)
     {
+        $this->authorize("update", $course);
+
         $enrollment->delete();
         return response()->json(["message" => 'Kicking ' . $enrollment->student->name . ' successfuly']);
     }

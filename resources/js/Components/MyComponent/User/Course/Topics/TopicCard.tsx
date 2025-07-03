@@ -5,7 +5,7 @@ import axios from "axios";
 import { ContentSkeleton } from "../CourseSkeleton";
 import TopicMenu from "./TopicMenu";
 
-export default function TopicCard({ user, topic, index, max_topic }: { user: User, topic: Topic, max_topic: number, index: number }) {
+export default function TopicCard({ user, topic, index, max_topic, isTeacher }: { user: User; topic: Topic; max_topic: number; index: number; isTeacher: boolean }) {
     const { data: contents, isLoading } = useQuery({
         queryKey: [`${topic.id}-contents`],
         queryFn: async () => {
@@ -19,12 +19,12 @@ export default function TopicCard({ user, topic, index, max_topic }: { user: Use
             <div className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold">{topic.title}</h1>
 
-                {user.role === 'teacher' && (
+                {isTeacher && (
                     <TopicMenu topic={topic} index={index} max_topic={max_topic} />
                 )}
             </div>
             {!isLoading ? contents && contents.map((content, i) => (
-                <ContentCard content={content} key={content.id} role={user.role} index={i} user_id={user.id} max_content={contents.length} />
+                <ContentCard content={content} key={content.id} isTeacher={isTeacher} index={i} user_id={user.id} max_content={contents.length} />
             )) : (
                 <div className="space-y-5">
                     <ContentSkeleton />

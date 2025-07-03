@@ -14,14 +14,15 @@ import ParticipantDialog from "@/Components/MyComponent/User/Course/ParticipantD
 export default function CourseDetail({
     auth: { user },
     course,
-    breadcrumbs,
-    participants
-}: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[], participants: Participants[] }>) {
+    breadcrumbs
+}: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[] }>) {
+    const isTeacher = course.teacher_id === user.id
+
+
     const { data: topics, isLoading } = useQuery({
         queryKey: [`${course.id}-topics`],
         queryFn: async () => {
             const response = await axios.get(`/courses/${course.id}/topics`);
-            console.log(`${course.id}-topics`)
             return (await response.data.topics) as Topic[];
         },
     });
@@ -38,18 +39,20 @@ export default function CourseDetail({
                 <div className="space-y-5 col-span-3">
                     <div className="flex justify-between items-center">
                         <h1 className="font-bold text-3xl">{course.title}</h1>
-                        {user.role === 'teacher' && (
-                            <div className="flex items-center gap-2">
-                                <ParticipantDialog participants={participants} />
-                                <CreateTopic course_id={course.id} />
-                                <CourseMenu course={course} />
-                            </div>
-                        )}
+                        <div className="flex items-center gap-2">
+                            <ParticipantDialog course_id={course.id} isTeacher={isTeacher} />
+                            {isTeacher && (
+                                <>
+                                    <CreateTopic course_id={course.id} />
+                                    <CourseMenu course={course} />
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     {!isLoading ? (
                         topics && topics.length > 0 && topics.map((topic, i) => (
-                            <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} />
+                            <TopicCard topic={topic} user={user} key={topic.id} index={i} max_topic={topics.length} isTeacher={isTeacher} />
                         ))
                     ) : (
                         <div className="mt-5 space-y-5">

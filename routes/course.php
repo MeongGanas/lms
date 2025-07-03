@@ -34,6 +34,7 @@ Route::middleware("auth")->group(function () {
 
     Route::prefix('/courses/{course}')->group(function () {
         // enrollment
+        Route::get('/enrollments', [CourseController::class, 'getEnrollments']);
         Route::get('/enroll', [CourseController::class, 'enrollView']);
         Route::post('/enroll', [CourseController::class, 'enroll']);
         Route::post('/enrollments/{enrollment}/kick', [CourseController::class, 'kickParticipant']);

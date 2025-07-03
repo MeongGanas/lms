@@ -71,3 +71,17 @@ export function ContentSkeleton() {
         </div>
     )
 }
+
+export function ParticipantSkeleton({ isTeacher }: { isTeacher: boolean }) {
+    return (
+        <li className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+                <Skeleton className="rounded-full w-10 h-10" />
+                <Skeleton className="w-20 h-4" />
+            </div>
+            {isTeacher && (
+                <Skeleton className="w-10 h-10" />
+            )}
+        </li>
+    )
+}

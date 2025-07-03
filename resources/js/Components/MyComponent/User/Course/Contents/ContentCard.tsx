@@ -9,14 +9,14 @@ import { format } from "date-fns";
 
 export default function ContentCard({
     content,
-    role,
     user_id,
     index,
-    max_content
+    max_content,
+    isTeacher
 }: {
     content: Content;
-    role: string;
     user_id: string;
+    isTeacher: boolean;
     index: number,
     max_content: number
 }) {
@@ -57,7 +57,7 @@ export default function ContentCard({
                             )}
                             <p className="font-light text-justify pb-1">{content.description}</p>
                         </div>
-                        {role === 'teacher' && (
+                        {isTeacher && (
                             <ContentMenu content={content} index={index} max_content={max_content} />
                         )}
                     </div>
@@ -93,7 +93,7 @@ export default function ContentCard({
                         </>
                     )}
                 </div>
-                {role === 'student' && (
+                {!isTeacher && (
                     <input type="radio" checked={content.progresses.some((progress) => progress.student_id === user_id)} className="cursor-pointer checked:bg-black" name={`content - ${content.id}`} id={content.id} onChange={setProgressDone} />
                 )}
             </div>
