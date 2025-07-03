@@ -1,5 +1,5 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Breadcrumbs, Course, PageProps, Topic } from "@/types";
+import { Breadcrumbs, Course, PageProps, Participants, Topic } from "@/types";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect } from "react";
@@ -14,8 +14,9 @@ import ParticipantDialog from "@/Components/MyComponent/User/Course/ParticipantD
 export default function CourseDetail({
     auth: { user },
     course,
-    breadcrumbs
-}: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[] }>) {
+    breadcrumbs,
+    participants
+}: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[], participants: Participants[] }>) {
     const { data: topics, isLoading } = useQuery({
         queryKey: [`${course.id}-topics`],
         queryFn: async () => {
@@ -39,7 +40,7 @@ export default function CourseDetail({
                         <h1 className="font-bold text-3xl">{course.title}</h1>
                         {user.role === 'teacher' && (
                             <div className="flex items-center gap-2">
-                                <ParticipantDialog />
+                                <ParticipantDialog participants={participants} />
                                 <CreateTopic course_id={course.id} />
                                 <CourseMenu course={course} />
                             </div>

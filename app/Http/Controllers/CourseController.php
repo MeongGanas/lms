@@ -63,7 +63,8 @@ class CourseController extends Controller
 
         return Inertia::render("User/Courses/Detail", [
             "course" => $course->only("id", "title"),
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'participants' => $course->enrollments()->with('student')->get()
         ]);
     }
 
@@ -88,6 +89,12 @@ class CourseController extends Controller
         ]);
 
         return response()->json(["enrollment" => $enrollment]);
+    }
+
+    public function kickParticipant(Course $course, Enrollment $enrollment)
+    {
+        $enrollment->delete();
+        return response()->json(["message" => 'Kicking ' . $enrollment->student->name . ' successfuly']);
     }
 
     public function edit(Course $course)

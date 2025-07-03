@@ -6,6 +6,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { TooltipProvider } from "./Components/ui/tooltip";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 const queryClient = new QueryClient();
@@ -22,8 +23,10 @@ createInertiaApp({
 
         root.render(
             <QueryClientProvider client={queryClient}>
-                <Toaster />
-                <App {...props} />
+                <TooltipProvider>
+                    <Toaster />
+                    <App {...props} />
+                </TooltipProvider>
             </QueryClientProvider>
         );
     },

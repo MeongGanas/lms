@@ -69,7 +69,7 @@ class ContentController extends Controller
 
         return Inertia::render('User/Courses/Contents/Detail', [
             'content' => $content,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 

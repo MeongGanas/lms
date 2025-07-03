@@ -7,6 +7,7 @@ import {
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb"
 import { Breadcrumbs } from "@/types";
+import { Link } from "@inertiajs/react";
 import React, { ReactNode } from "react";
 
 export default function CourseLayout({ children, breadcrumbs }: { children: ReactNode, breadcrumbs: Breadcrumbs[] }) {
@@ -17,8 +18,8 @@ export default function CourseLayout({ children, breadcrumbs }: { children: Reac
                     {breadcrumbs.slice(0, -1).map((breadcrumb, index) => (
                         <React.Fragment key={index}>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`${breadcrumb.url}`} className="capitalize">{breadcrumb.title}
-                                </BreadcrumbLink>
+                                <Link href={`${breadcrumb.url}`} className="capitalize">{breadcrumb.title}
+                                </Link>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                         </React.Fragment>

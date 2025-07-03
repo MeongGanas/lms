@@ -2,9 +2,9 @@ export interface User {
     id: string;
     firstname: string;
     lastname: string;
-    phone_number: string;
     role: string;
     email: string;
+    profile_image: string;
     email_verified_at?: string;
     created_at: string;
     updated_at: string;
@@ -97,4 +97,13 @@ export type PageProps<
 export interface Breadcrumbs {
     title: string;
     url: string;
+}
+
+export interface Participants {
+    id: string;
+    user_id: string;
+    course_id: string;
+    student: User;
+    created_at: string;
+    updated_at: string;
 }

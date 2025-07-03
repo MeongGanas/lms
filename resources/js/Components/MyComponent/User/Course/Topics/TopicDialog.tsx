@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { useQueryClient } from "react-query";
 import { Pencil, Plus } from "lucide-react";
 import { Topic } from "@/types";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/Components/ui/tooltip";
 
 export function CreateTopic({ course_id }: { course_id: string }) {
     const [title, setTitle] = useState("")
@@ -45,11 +46,19 @@ export function CreateTopic({ course_id }: { course_id: string }) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button size={'icon'} variant={'outline'}>
-                    <Plus className="w-3 h-3" />
-                </Button>
-            </DialogTrigger>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <DialogTrigger asChild>
+                        <Button size={'icon'} variant={'outline'}>
+                            <Plus className="w-3 h-3" />
+                        </Button>
+                    </DialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Create Topic</p>
+                </TooltipContent>
+            </Tooltip>
+
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle className="text-left">

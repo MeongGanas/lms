@@ -45,7 +45,7 @@ export default function ContentCard({
                 <div className="w-full rounded-xl space-y-2" key={content.id}>
                     <div className="flex items-center justify-between gap-5">
                         <div className="space-y-2">
-                            <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}`} className="text-lg underline">{content.title}</Link>
+                            <Link href={`/courses/${content.course_id}/topics/${content.topic_id}/contents/${content.id}`} className="text-lg underline cursor-pointer">{content.title}</Link>
                             {content.type !== 'material' && (
                                 <>
                                     {content.deadline ? (
