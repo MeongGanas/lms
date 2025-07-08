@@ -25,7 +25,9 @@ createInertiaApp({
             <QueryClientProvider client={queryClient}>
                 <TooltipProvider>
                     <Toaster />
-                    <App {...props} />
+                    <div className="bg-black/10">
+                        <App {...props} />
+                    </div>
                 </TooltipProvider>
             </QueryClientProvider>
         );

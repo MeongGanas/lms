@@ -15,7 +15,7 @@ export function StudentCourseCard({ course }: { course: StudentCourse }) {
     const teacherName = course.teacher.lastname ? `${course.teacher.firstname + course.teacher.lastname}` : course.teacher.firstname;
 
     return (
-        <Link href={`/courses/${course.id}`}>
+        <Link href={`/courses/${course.id}`} className="cursor-pointer">
             <Card className="shadow-sm border-neutral-100 rounded-xl">
                 <CardHeader className="p-3">
                     <img
@@ -41,7 +41,7 @@ export function StudentCourseCard({ course }: { course: StudentCourse }) {
 
 export function TeacherCourseCard({ course }: { course: Course }) {
     return (
-        <Link href={`/courses/${course.id}`}>
+        <Link href={`/courses/${course.id}`} className="cursor-pointer">
             <Card className="shadow-sm border-neutral-100 rounded-xl">
                 <CardHeader className="p-3">
                     <img
@@ -71,7 +71,7 @@ export function PublicCourseCard({ user_id, course }: { course: Course; user_id:
 
     return (
         <Card className="shadow-sm border-neutral-100 rounded-xl">
-            <Link href={`/courses/${course.id}`} preserveState>
+            <Link href={`/courses/${course.id}`} preserveState className="cursor-pointer">
                 <CardHeader className="px-3 pb-2">
                     <img
                         src="/asset/course_placeholder.png"

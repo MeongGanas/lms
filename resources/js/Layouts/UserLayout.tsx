@@ -29,7 +29,7 @@ export default function UserLayout({
     const current_route = window.location.pathname;
 
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] max-w-screen-2xl border mx-auto bg-white">
             <div className="hidden border-r md:block">
                 <div className="sticky top-0 flex flex-col h-full max-h-screen gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -157,7 +157,7 @@ export default function UserLayout({
                     </div>
                     <UserDropdown user={user} />
                 </header>
-                <main className="flex flex-col flex-1 gap-4 p-2 sm:p-4 max-w-screen-2xl lg:gap-6 lg:p-6">
+                <main className="flex flex-col flex-1 gap-4 p-2 sm:p-4 lg:gap-6 lg:p-6">
                     {children}
                 </main>
             </div>

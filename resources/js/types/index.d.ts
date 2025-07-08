@@ -107,3 +107,13 @@ export interface Participants {
     created_at: string;
     updated_at: string;
 }
+
+export interface Comment{
+    id: string;
+    parent_id: string;
+    user_id: string;
+    content_id: string;
+    body: string;
+    created_at: string;
+    updated_at: string;
+}

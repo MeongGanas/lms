@@ -31,7 +31,7 @@ export function CreateDialog() {
             success: (res) => {
                 setIsSubmitted(false);
                 const course = res.data.course as Course;
-                router.replace(`/courses/${course.id}`);
+                router.get(`/courses/${course.id}`);
                 return "Course created successfully";
             },
             error: (err) => {

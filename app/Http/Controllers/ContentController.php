@@ -61,9 +61,7 @@ class ContentController extends Controller
         $breadcrumbs = [
             ['title' => 'Courses', 'url' => route('courses.index')],
             ['title' => $course->title, 'url' => route('courses.show', $course)],
-            ['title' => 'Topics', 'url' => route('courses.show', $course)],
             ['title' => $topic->title, 'url' => '#'],
-            ['title' => 'Contents', 'url' => '#'],
             ['title' => $content->title, 'url' => '#'],
         ];
 
@@ -84,9 +82,7 @@ class ContentController extends Controller
         $breadcrumbs = [
             ['title' => 'Courses', 'url' => route('courses.index')],
             ['title' => $course->title, 'url' => route('courses.show', $course)],
-            ['title' => 'Topics', 'url' => route('courses.show', $course)],
             ['title' => $topic->title, 'url' => '#'],
-            ['title' => 'Contents', 'url' => '#'],
             ['title' => 'Create', 'url' => '#'],
         ];
 
@@ -136,10 +132,8 @@ class ContentController extends Controller
         $breadcrumbs = [
             ['title' => 'Courses', 'url' => route('courses.index')],
             ['title' => $course->title, 'url' => route('courses.show', $course)],
-            ['title' => 'Topics', 'url' => route('courses.show', $course)],
             ['title' => $topic->title, 'url' => '#'],
-            ['title' => 'Contents', 'url' => '#'],
-            ['title' => $content->title, 'url' => '#'],
+            ['title' => $content->title, 'url' => route('contents.show', [$course, $topic, $content])],
             ['title' => 'Edit', 'url' => '#'],
         ];
 

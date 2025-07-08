@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RecentCourseController;
@@ -53,7 +54,7 @@ Route::middleware("auth")->group(function () {
         Route::get('/topics/{topic}/contents/create', [ContentController::class, 'create']);
         Route::post('/content/create', [ContentController::class, 'store']);
 
-        Route::get('/topics/{topic}/contents/{content}', [ContentController::class, 'show']);
+        Route::get('/topics/{topic}/contents/{content}', [ContentController::class, 'show'])->name('contents.show');
 
         Route::get('/topics/{topic}/contents/{content}/edit', [ContentController::class, 'edit']);
         Route::put('/contents/{content}/edit', [ContentController::class, 'update']);
@@ -62,11 +63,16 @@ Route::middleware("auth")->group(function () {
         Route::put('/contents/{content}/set-progress-done', [ContentController::class, 'setProgressDone']);
         Route::put('/contents/{content}/move-to-top', [ContentController::class, 'moveToTop']);
 
+        // submissions
         Route::get('/topics/{topic}/contents/{content}/submissions', [SubmissionController::class, 'getSubmissions']);
     });
 
     // contents
     Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);
+
+    // comments
+    Route::get('contents/{content}/comments', [CommentController::class, 'getComments']);
+    Route::post('contents/{content}/comment', [CommentController::class, 'store']);
 
     // search
     Route::get('/course/search', [CourseController::class, 'searchCourse']);
