@@ -18,6 +18,9 @@ class Comment extends Model
         });
     }
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $guarded = ['id'];
 
     public function user()

@@ -8,6 +8,7 @@ import { SubmissionForm } from "@/Components/MyComponent/User/Course/Contents/Su
 import { CommentForm } from "@/Components/MyComponent/User/Course/Contents/CommentForm";
 import { useQuery } from "react-query";
 import axios from "axios";
+import CommentCard from "@/Components/MyComponent/User/Course/Contents/CommentCard";
 
 export default function ContentDetail({
     auth: { user },
@@ -22,11 +23,9 @@ export default function ContentDetail({
         queryKey: [`${content.id}-comments`],
         queryFn: async () => {
             const response = await axios.get(`/contents/${content.id}/comments`);
-            return (await response.data.topics) as Comment[];
+            return (await response.data.comments) as Comment[];
         },
     });
-
-    console.log(comments)
 
     return (
         <UserLayout user={user}>
@@ -48,24 +47,23 @@ export default function ContentDetail({
                             )}
                         </div>
                         {content.description && (
-                            <p className="font-light text-justify pb-1">{content.description}</p>
+                            <p className="font-light text-justify border-y py-5">{content.description}</p>
                         )}
 
                         {content.external_url && (
-                            <>
-                                {videoId ? (
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${videoId}`}
-                                        title="YouTube video"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        className="rounded-xl aspect-video w-full"
-                                    ></iframe>
-                                ) : (
-                                    <a href={content.external_url} target="_blank" className="text-blue-500 underline">Klik di sini</a>
-                                )}
-                            </>
+                            videoId ? (
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${videoId}`}
+                                    title="YouTube video"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="rounded-xl aspect-video w-full"
+                                ></iframe>
+                            ) : (
+                                <a href={content.external_url} target="_blank" className="text-blue-500 underline">Klik di sini</a>
+                            )
                         )}
+
                         {content.file_path && (
                             <>
                                 {content.file_path.endsWith('.pdf') && (
@@ -87,7 +85,20 @@ export default function ContentDetail({
                                 <SubmissionForm />
                             </div>
                         )}
-                        <CommentForm content_id={content.id} user_id={user.id} />
+
+                        <div className="space-y-2">
+                            <h2 className="text-lg font-semibold">Comments ({comments ? comments.length : 0})</h2>
+                            {isLoading ? (
+                                <h1>Loading</h1>
+                            ) : (
+                                <div className="space-y-5 py-3">
+                                    {comments?.map((comment) => (
+                                        <CommentCard key={comment.id} user_id={user.id} comment={comment} content_id={content.id} />
+                                    ))}
+                                </div>
+                            )}
+                            <CommentForm content_id={content.id} user_id={user.id} />
+                        </div>
                     </div>
                     {notMaterial && (
                         <div className="hidden xl:block">

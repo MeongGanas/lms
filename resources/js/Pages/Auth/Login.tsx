@@ -45,7 +45,6 @@ export default function Login() {
                 return "Login Success!";
             },
             error: (err) => {
-                console.log(err);
                 setIsSubmitted(false);
                 return err?.response?.data?.message || "Something went wrong";
             },
@@ -53,7 +52,7 @@ export default function Login() {
     });
 
     return (
-        <div className="w-full h-screen lg:grid lg:grid-cols-2">
+        <div className="w-full h-screen lg:grid lg:grid-cols-2 bg-white">
             <Head title="Login" />
             <div className="flex items-center justify-center py-12">
                 <Form {...form}>

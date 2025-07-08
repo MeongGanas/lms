@@ -73,6 +73,7 @@ Route::middleware("auth")->group(function () {
     // comments
     Route::get('contents/{content}/comments', [CommentController::class, 'getComments']);
     Route::post('contents/{content}/comment', [CommentController::class, 'store']);
+    Route::delete('comments/{comment}/delete', [CommentController::class, 'destroy']);
 
     // search
     Route::get('/course/search', [CourseController::class, 'searchCourse']);
