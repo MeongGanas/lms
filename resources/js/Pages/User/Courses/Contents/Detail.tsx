@@ -1,6 +1,6 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Breadcrumbs, Comment, Content, PageProps } from "@/types";
-import { Head, Link } from "@inertiajs/react";
+import { Breadcrumbs, Comment, Content, PageProps, TempFile } from "@/types";
+import { Head } from "@inertiajs/react";
 import CourseLayout from "@/Layouts/CourseLayout";
 import { getYoutubeId } from "@/lib/utils";
 import { format } from "date-fns";
@@ -82,7 +82,7 @@ export default function ContentDetail({
                         )}
                         {notMaterial && (
                             <div className="block xl:hidden">
-                                <SubmissionForm />
+                                <SubmissionForm content={content} user_id={user.id} />
                             </div>
                         )}
 
@@ -91,7 +91,7 @@ export default function ContentDetail({
                             {isLoading ? (
                                 <h1>Loading</h1>
                             ) : (
-                                <div className="space-y-5 py-3">
+                                <div className={`space-y-5 py-3 ${comments && comments.length > 0 ? 'block' : 'hidden'}`}>
                                     {comments?.map((comment) => (
                                         <CommentCard key={comment.id} user_id={user.id} comment={comment} content_id={content.id} />
                                     ))}
@@ -102,7 +102,13 @@ export default function ContentDetail({
                     </div>
                     {notMaterial && (
                         <div className="hidden xl:block">
-                            <SubmissionForm />
+                            {user.role === 'student' ? (
+                                <SubmissionForm content={content} user_id={user.id} />
+                            ) : (
+                                <div>
+                                    <h1>Submissions</h1>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

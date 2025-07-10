@@ -118,3 +118,13 @@ export interface Comment {
     created_at: string;
     updated_at: string;
 }
+
+export interface TempFile {
+    id: string;
+    user_id: string;
+    content_id: string;
+    file_name: string;
+    file_path: string;
+    created_at: string;
+    updated_at: string;
+}

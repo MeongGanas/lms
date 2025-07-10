@@ -59,4 +59,9 @@ class Content extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function tempFiles()
+    {
+        return $this->hasMany(TemporaryFiles::class);
+    }
 }

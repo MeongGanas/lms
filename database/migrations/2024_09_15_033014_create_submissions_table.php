@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->foreignUuid("content_id")->index()->constrained()->cascadeOnDelete();
             $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
-            $table->string("file_path");
             $table->boolean("sended")->default(true);
             $table->integer("score")->nullable();
             $table->timestamps();

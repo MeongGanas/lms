@@ -1,6 +1,5 @@
 import { Button } from "@/Components/ui/button";
 import { Textarea } from "@/Components/ui/textarea";
-import { Comment } from "@/types";
 import axios from "axios";
 import { Send } from "lucide-react";
 import { SyntheticEvent, useState } from "react";
@@ -10,6 +9,7 @@ import { useQueryClient } from "react-query";
 export function CommentForm({ content_id, user_id }: { content_id: string; user_id: string }) {
     const [body, setBody] = useState('');
     const queryClient = useQueryClient();
+
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
         const promise = axios.post(`/contents/${content_id}/comment`, {

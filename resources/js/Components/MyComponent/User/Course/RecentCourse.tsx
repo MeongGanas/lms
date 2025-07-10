@@ -36,7 +36,6 @@ export function RecentStudentCourse() {
         queryKey: ['recent-student-courses'],
         queryFn: async () => {
             const response = await axios.get("/student/getRecentCourses");
-            console.log((await response.data.courses))
             return (await response.data.courses) as StudentCourse[];
         },
     });

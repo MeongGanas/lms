@@ -5,6 +5,7 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RecentCourseController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\TemporaryFilesController;
 use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -69,6 +70,11 @@ Route::middleware("auth")->group(function () {
 
     // contents
     Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);
+
+    // submissions
+    Route::get('/contents/{content}/submission/temp_files', [TemporaryFilesController::class, 'getTempFiles']);
+    Route::post('/contents/{content}/submission/temp_files', [TemporaryFilesController::class, 'store']);
+    Route::delete('/submission/temp_files/{temporaryFile}/delete', [TemporaryFilesController::class, 'destroy']);
 
     // comments
     Route::get('contents/{content}/comments', [CommentController::class, 'getComments']);

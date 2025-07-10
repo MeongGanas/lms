@@ -15,7 +15,6 @@ export function AllCourses({ user_id }: { user_id: string }) {
 
     return (
         <>
-            {isLoading && <h1>Loading...</h1>}
             {data && data.length > 0 ? (
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                     {data.map((course) => (
