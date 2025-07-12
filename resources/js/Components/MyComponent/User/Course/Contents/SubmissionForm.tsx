@@ -1,31 +1,51 @@
 import { Button } from "@/Components/ui/button"
 import { Content, TempFile } from "@/types";
 import axios from "axios";
-import { X } from "lucide-react";
-import { ChangeEvent, SyntheticEvent } from "react"
+import { ChangeEvent, SyntheticEvent, useState } from "react"
 import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "react-query"
+import { UploadedFileCardSkeleton, UploadedFileCard } from "./UploadedFileCard";
 
-export function SubmissionForm({ content, user_id }: { content: Content; user_id: string }) {
+export function SubmissionForm({ content, user_id }: { content: Content; user_id: string; }) {
     const { data: tempFiles, isLoading } = useQuery({
-        queryKey: [`${content.id}-temp_files`],
+        queryKey: [`${content.id}-${user_id}-temp_files`],
         queryFn: async () => {
             const response = await axios.get(`/contents/${content.id}/submission/temp_files`);
             return (await response.data.files) as TempFile[];
         },
     });
 
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const queryClient = useQueryClient();
 
-    const submit = () => {
-        console.log("submit submission")
+    const submit = (e: SyntheticEvent) => {
+        e.preventDefault()
+        if (tempFiles) {
+            setIsSubmitted(true)
+
+            const promise = axios.post(`/contents/${content.id}/submission/submit`, { files: [...tempFiles], user_id })
+
+            toast.promise(promise, {
+                loading: "Submitting...",
+                success: (res) => {
+                    setIsSubmitted(false)
+                    return res.data.message;
+                },
+                error: (err) => {
+                    setIsSubmitted(false)
+                    console.log(err);
+                    return err?.response?.data?.message || "Something went wrong";
+                },
+            })
+        }
     }
 
     const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files
+        const files = e.target.files;
 
         if (files && files?.length > 0) {
-            const filesArray = Array.from(files)
+            const filesArray = Array.from(files);
             const formData = new FormData();
 
             formData.append('user_id', user_id);
@@ -34,7 +54,7 @@ export function SubmissionForm({ content, user_id }: { content: Content; user_id
                 formData.append('files[]', file);
             });
 
-            sendToTempFiles(formData)
+            sendToTempFiles(formData);
         }
     }
 
@@ -48,26 +68,7 @@ export function SubmissionForm({ content, user_id }: { content: Content; user_id
         toast.promise(promise, {
             loading: "Uploading...",
             success: (res) => {
-                queryClient.invalidateQueries([`${content.id}-temp_files`])
-                return res.data.message;
-            },
-            error: (err) => {
-                console.log(err);
-                return err?.response?.data?.message || "Something went wrong";
-            },
-        })
-    }
-
-    const deleteTempFiles = (e: SyntheticEvent, tempFile: TempFile) => {
-        e.preventDefault()
-
-        const promise = axios.delete(`/submission/temp_files/${tempFile.id}/delete`)
-
-        toast.promise(promise, {
-            loading: "Deleting...",
-            success: (res) => {
-                console.log(res.data)
-                queryClient.invalidateQueries([`${content.id}-temp_files`])
+                queryClient.invalidateQueries([`${content.id}-${user_id}-temp_files`]);
                 return res.data.message;
             },
             error: (err) => {
@@ -80,14 +81,11 @@ export function SubmissionForm({ content, user_id }: { content: Content; user_id
     return (
         <form onSubmit={submit} className="space-y-3">
             <div className="space-y-2">
-                {tempFiles && tempFiles.length > 0 && (
-                    tempFiles.map((tempFile, i) => (
-                        <div key={i} className="flex justify-between">
-                            <a target="_blank" href={`/storage/${tempFile.file_path}`} className="text-blue-600 underline">{tempFile.file_name}</a>
-                            <button className="group" onClick={(e) => deleteTempFiles(e, tempFile)}>
-                                <X className="w-4 h-4 group-hover:text-red-600 transition" />
-                            </button>
-                        </div>
+                {isLoading ? (
+                    <UploadedFileCardSkeleton />
+                ) : (
+                    tempFiles?.map((tempFile) => (
+                        <UploadedFileCard key={tempFile.id} tempFile={tempFile} content={content} user_id={user_id} />
                     ))
                 )}
             </div>
@@ -107,7 +105,7 @@ export function SubmissionForm({ content, user_id }: { content: Content; user_id
                 </label>
             </div>
 
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button type="submit" disabled={isLoading || tempFiles?.length === 0 || isSubmitted} className="w-full">Submit</Button>
         </form>
     )
 }

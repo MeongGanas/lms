@@ -15,20 +15,23 @@ export function AllCourses({ user_id }: { user_id: string }) {
 
     return (
         <>
-            {data && data.length > 0 ? (
+            {isLoading ? (
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                    {data.map((course) => (
-                        <PublicCourseCard course={course} key={course.id} user_id={user_id} />
-                    ))}
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
+                    <PublicCourseSkeleton />
                 </div>
             ) : (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                    <PublicCourseSkeleton />
-                    <PublicCourseSkeleton />
-                    <PublicCourseSkeleton />
-                    <PublicCourseSkeleton />
-                </div>
+                data && data.length > 0 && (
+                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                        {data.map((course) => (
+                            <PublicCourseCard course={course} key={course.id} user_id={user_id} />
+                        ))}
+                    </div>
+                )
             )}
+
         </>
     );
 }

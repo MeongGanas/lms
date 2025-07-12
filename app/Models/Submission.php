@@ -30,4 +30,9 @@ class Submission extends Model
     {
         return $this->belongsTo(Content::class);
     }
+
+    public function files()
+    {
+        return $this->hasMany(SubmissionFiles::class);
+    }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Content;
 use App\Models\Submission;
+use App\Models\SubmissionFiles;
+use App\Models\TemporaryFiles;
 use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
@@ -26,9 +29,32 @@ class SubmissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Content $content)
     {
-        //
+        $validatedData =  $request->validate([
+            'user_id' => 'required|uuid|exists:users,id',
+            'files'   => 'required|array',
+            'files.*.id' => 'required|uuid|exists:temporary_files,id',
+            'files.*.file_name' => 'required|string|exists:temporary_files,file_name',
+            'files.*.file_path' => 'required|string|exists:temporary_files,file_path',
+        ]);
+
+        $submission = Submission::create([
+            'student_id' => $validatedData['user_id'],
+            'content_id' => $content->id
+        ]);
+
+        foreach ($validatedData['files'] as $file) {
+            SubmissionFiles::create([
+                'submission_id' => $submission->id,
+                'file_name' => $file['file_name'],
+                'file_path' => $file['file_path'],
+            ]);
+
+            TemporaryFiles::where('id', $file['id'])->delete();
+        }
+
+        return response()->json(['message' => 'Files submitted successfully']);
     }
 
     /**

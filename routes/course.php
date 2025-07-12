@@ -72,6 +72,9 @@ Route::middleware("auth")->group(function () {
     Route::put('/contents/{content}/move-to-bottom', [ContentController::class, 'moveToBottom']);
 
     // submissions
+    Route::post('/contents/{content}/submission/submit', [SubmissionController::class, 'store']);
+
+    // submissions temp files
     Route::get('/contents/{content}/submission/temp_files', [TemporaryFilesController::class, 'getTempFiles']);
     Route::post('/contents/{content}/submission/temp_files', [TemporaryFilesController::class, 'store']);
     Route::delete('/submission/temp_files/{temporaryFile}/delete', [TemporaryFilesController::class, 'destroy']);
