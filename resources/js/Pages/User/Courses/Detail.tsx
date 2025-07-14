@@ -18,7 +18,6 @@ export default function CourseDetail({
 }: PageProps<{ course: Course; breadcrumbs: Breadcrumbs[] }>) {
     const isTeacher = course.teacher_id === user.id
 
-
     const { data: topics, isLoading } = useQuery({
         queryKey: [`${course.id}-topics`],
         queryFn: async () => {

@@ -30,6 +30,8 @@ export function SubmissionForm({ content, user_id }: { content: Content; user_id
                 loading: "Submitting...",
                 success: (res) => {
                     setIsSubmitted(false)
+                    queryClient.invalidateQueries([`${content.id}-${user_id}-submission`]);
+                    queryClient.invalidateQueries([`${content.id}-${user_id}-temp_files`]);
                     return res.data.message;
                 },
                 error: (err) => {

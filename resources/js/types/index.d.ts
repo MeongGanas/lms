@@ -128,3 +128,25 @@ export interface TempFile {
     created_at: string;
     updated_at: string;
 }
+
+export interface SubmissionFile {
+    id: string;
+    submission_id: string;
+    file_name: string;
+    file_path: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Submission {
+    id: string;
+    student_id: string;
+    content_id: string;
+    sended: boolean;
+    status: string;
+    score: number;
+    files: SubmissionFile[];
+    student: User;
+    created_at: string;
+    updated_at: string;
+}

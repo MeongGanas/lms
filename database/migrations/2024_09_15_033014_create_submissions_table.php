@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid("content_id")->index()->constrained()->cascadeOnDelete();
             $table->foreignUuid("student_id")->index()->constrained("users", "id")->cascadeOnDelete();
             $table->boolean("sended")->default(true);
+            $table->enum("status", ['on time', 'late'])->default('on time');
             $table->integer("score")->nullable();
             $table->timestamps();
         });
