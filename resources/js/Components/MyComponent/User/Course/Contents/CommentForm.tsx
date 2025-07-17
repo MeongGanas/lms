@@ -30,11 +30,9 @@ export function CommentForm({ content_id, user_id }: { content_id: string; user_
     }
 
     return (
-        <form onSubmit={submit}>
-            <div className="relative">
-                <Textarea value={body} placeholder="Write your question or suggestion." className="h-32" onChange={(e) => setBody(e.target.value)} />
-                <Button type="submit" className="absolute right-2 bottom-2" size={'icon'}><Send className="w-4 h-4" /></Button>
-            </div>
+        <form onSubmit={submit} className="relative">
+            <Textarea value={body} placeholder="Write your question or suggestion." className="h-32" onChange={(e) => setBody(e.target.value)} required />
+            <Button type="submit" className="absolute right-2 bottom-2" size={'icon'}><Send className="w-4 h-4" /></Button>
         </form>
     )
 }

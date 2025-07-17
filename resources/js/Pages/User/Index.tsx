@@ -8,11 +8,13 @@ import {
 import { CreateDialog } from "@/Components/MyComponent/User/Course/CourseDialog";
 
 export default function Index({ auth: { user } }: PageProps) {
+    const isTeacher = user?.role === "teacher";
+    const isStudent = user?.role === "student";
     return (
         <UserLayout user={user}>
             <Head title="Home" />
 
-            {user && user.role === "teacher" && (
+            {user && isTeacher && (
                 <div
                     id="join-or-create"
                     className="flex items-center justify-center w-full py-20 rounded-xl bg-muted"
@@ -30,8 +32,8 @@ export default function Index({ auth: { user } }: PageProps) {
                         <p>You must login first to continue your learn.</p>
                     </div>
                 )}
-                {user && user.role === "student" && <RecentStudentCourse />}
-                {user && user.role === "teacher" && <RecentTeacherCourse />}
+                {user && isStudent && <RecentStudentCourse />}
+                {user && isTeacher && <RecentTeacherCourse />}
             </div>
         </UserLayout>
     );

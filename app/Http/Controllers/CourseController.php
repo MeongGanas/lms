@@ -45,7 +45,7 @@ class CourseController extends Controller
             "teacher_id" => $request->user()->id
         ]);
 
-        return response()->json(["course" => $newCourse]);
+        return response()->json(["course" => $newCourse, "message" => "Course created successfully"]);
     }
 
     public function show(Course $course)
@@ -87,12 +87,12 @@ class CourseController extends Controller
 
     public function enroll(Course $course, Request $request)
     {
-        $enrollment = Enrollment::firstOrCreate([
+        Enrollment::firstOrCreate([
             'course_id' => $course->id,
             'student_id' => $request->user()->id,
         ]);
 
-        return response()->json(["enrollment" => $enrollment]);
+        return response()->json(["message" => "Successfully enroll the course"]);
     }
 
     public function kickParticipant(Course $course, Enrollment $enrollment)

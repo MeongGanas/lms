@@ -1,5 +1,5 @@
 import UserLayout from "@/Layouts/UserLayout";
-import { Breadcrumbs, Course, PageProps, Participants, Topic } from "@/types";
+import { Breadcrumbs, Course, PageProps, Topic } from "@/types";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect } from "react";

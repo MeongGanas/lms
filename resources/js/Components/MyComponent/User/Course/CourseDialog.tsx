@@ -32,7 +32,7 @@ export function CreateDialog() {
                 setIsSubmitted(false);
                 const course = res.data.course as Course;
                 router.get(`/courses/${course.id}`);
-                return "Course created successfully";
+                return res.data.message;
             },
             error: (err) => {
                 setIsSubmitted(false);
@@ -97,10 +97,12 @@ export function JoinDialog({ course }: { course: Course }) {
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
+
         if (key !== course.enrollment_key) {
             toast.error("Enrollment key wrong!");
             return;
         }
+
         setIsSubmitted(true);
         const promise = axios.post(`/courses/${course.id}/enroll`);
         toast.promise(promise, {
@@ -108,7 +110,7 @@ export function JoinDialog({ course }: { course: Course }) {
             success: (res) => {
                 setIsSubmitted(false);
                 router.replace(`/courses/${course.id}`);
-                return "Joining course successfully";
+                return res.data.message;
             },
             error: (err) => {
                 setIsSubmitted(false);

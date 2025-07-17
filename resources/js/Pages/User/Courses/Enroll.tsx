@@ -2,7 +2,7 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import UserLayout from "@/Layouts/UserLayout";
 import { Course, PageProps } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import toast from "react-hot-toast";
@@ -29,8 +29,8 @@ export default function EnrollCourse({
             loading: "Enroll the course...",
             success: (res) => {
                 setIsSubmitted(false);
-                window.location.replace(`/courses/${course.id}`);
-                return "Successfully enroll the course";
+                router.replace(`/courses/${course.id}`);
+                return res.data.message;
             },
             error: (err) => {
                 console.log(err);

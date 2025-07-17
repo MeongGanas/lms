@@ -58,7 +58,6 @@ export default function Edit({ auth: { user }, content, topic, breadcrumbs }: Pa
 
         if (values.deadline) {
             data.append('deadline', values.deadline.toISOString());
-            // console.log(values.deadline.toISOString())
         }
 
         if (values.file_path && values.file_path.length > 0) {
